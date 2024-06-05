@@ -3,28 +3,26 @@ import { Button, Card, Col, Container, Dropdown, Form, Modal, Row } from 'react-
 import Breadcrumb from 'Common/BreadCrumb';
 import CountUp from 'react-countup';
 import { Link, useNavigate } from 'react-router-dom';
+import ListViewPersonnels from './ListViewPersonnels';
 
-import Flatpickr from "react-flatpickr";
 
-import avatar2 from "../../assets/images/users/avatar-2.jpg"
-import ListViewTable from '../GestionsEtudiants/listViewTable';
 
-const GestionEnseignant = () => {
+const ListPersonnels = () => {
 
-    document.title = "List View - Sellers | Toner eCommerce + Admin React Template";
+    document.title = "Liste Des Personnels | Application Smart Institute";
 
     const navigate = useNavigate();
 
     const [modal_AddEnseignantModals, setmodal_AddEnseignantModals] = useState<boolean>(false);
     function tog_AddEnseignantModals() {
-        navigate("/GestionEnseignant/AjouterEnseignant")
+        navigate("/AjouterPersonnel")
     }
 
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumb title="Gestion des Enseignants" pageTitle="Dashboard" />
+                    <Breadcrumb title="Gestion des Personnels" pageTitle="Liste Des Personnels " />
                     <Row>
                         <Col xxl={3} md={6}>
                             <Card className="card-height-100 bg-warning-subtle border-0 overflow-hidden">
@@ -65,7 +63,7 @@ const GestionEnseignant = () => {
                                     <h4 className="fs-22 fw-semibold mb-3">
                                         <CountUp start={0} end={207} duration={3} decimals={2} suffix="k" />
                                     </h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Nombre d'enseignants</p>
+                                    <p className="mb-0 fw-medium text-uppercase fs-14">Nombre de personnels</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -108,7 +106,7 @@ const GestionEnseignant = () => {
                                     <h4 className="fs-22 fw-semibold mb-3">
                                         <CountUp start={0} end={159} duration={3} decimals={2} suffix="k" />
                                     </h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Enseignants Activés</p>
+                                    <p className="mb-0 fw-medium text-uppercase fs-14">Personnels Activés</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -151,7 +149,7 @@ const GestionEnseignant = () => {
                                     <h4 className="fs-22 fw-semibold mb-3">
                                         <CountUp start={0} end={48} duration={3} decimals={2} suffix="k" />
                                     </h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Enseignants Desactivés</p>
+                                    <p className="mb-0 fw-medium text-uppercase fs-14">Personnels Desactivés</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -206,7 +204,7 @@ const GestionEnseignant = () => {
                                         </Col> */}
                                         <Col className="col-lg-auto ms-auto">
                                             <div className="hstack gap-2">
-                                                <Button variant='primary' className="add-btn"  onClick={() => tog_AddEnseignantModals()}>Ajouter Enseignant</Button>
+                                                <Button variant='primary' className="add-btn"  onClick={() => tog_AddEnseignantModals()}>Ajouter Personnel</Button>
                                                 {/* <Dropdown>
                                                     <Dropdown.Toggle className="btn-icon btn btn-soft-dark arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <i className="ph-dots-three-outline"></i>
@@ -288,7 +286,7 @@ const GestionEnseignant = () => {
                                 <Card.Body className='p-0'>
                                     {/* <div className="table-responsive table-card mb-1"> */}
                                         <table className="table align-middle table-nowrap" id="customerTable">
-                                        <ListViewTable />
+                                        <ListViewPersonnels />
                                         </table>
                                         <div className="noresult" style={{ display: "none" }}>
                                             <div className="text-center py-4">
@@ -312,4 +310,4 @@ const GestionEnseignant = () => {
     );
 }
 
-export default GestionEnseignant;
+export default ListPersonnels;

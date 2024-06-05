@@ -7,6 +7,7 @@ const Navdata = () => {
     const [isAvisEtudiant, setIsAvisEtudiant] = useState(false);
     const [isAvisEnseignant, setIsAvisEnseignant] = useState(false);
     const [isAvisPersonnel, setIsAvisPersonnel] = useState(false);
+    const [isDeaprtement, setIsDeaprtement] = useState(false);
     const [isSellers, setIsSellers] = useState(false);
     const [isInvoice, setIsInvoice] = useState(false);
     const [isParametre, setIsParametre] = useState(false);
@@ -17,6 +18,10 @@ const Navdata = () => {
     // Multi Level
     const [isLevel1, setIsLevel1] = useState(false);
     const [isLevel2, setIsLevel2] = useState(false);
+    const [isLevel3, setIsLevel3] = useState(false);
+    const [isLevel4, setIsLevel4] = useState(false);
+    const [isLevel5, setIsLevel5] = useState(false);
+    
 
     const [iscurrentState, setIscurrentState] = useState('Dashboard');
 
@@ -67,6 +72,9 @@ const Navdata = () => {
         if (iscurrentState !== 'AvisPersonnel') {
             setIsAvisPersonnel(false);
         }
+        if (iscurrentState !== 'Departement') {
+            setIsDeaprtement(false);
+        }
     }, [
         iscurrentState,
         isEcommerce,
@@ -78,7 +86,8 @@ const Navdata = () => {
         isMultiLevel,
         isAvisEtudiant,
         isAvisEnseignant,
-        isAvisPersonnel
+        isAvisPersonnel,
+        isDeaprtement
     ]);
 
     const menuItems: any = [
@@ -95,12 +104,12 @@ const Navdata = () => {
             badgeName : "Hot",
             badgeColor : "danger"
         },
-     // avis etudiant
+     // gestion etudiant
         {
-            id: "Gestion-des-Avis",
-            label: "Avis Etudiant",
+            id: "Gestion-des-Etudiants",
+            label: "Gestion des Etudiants",
             link: "/#",
-            icon: "bi bi-megaphone",
+            icon: "bi bi-person-fill-gear",
             click: function (e: any) {
                 e.preventDefault();
                 setIsAvisEtudiant(!isAvisEtudiant);
@@ -110,28 +119,28 @@ const Navdata = () => {
             stateVariables: isAvisEtudiant,
             subItems: [
                 {
-                    id: "AjouterAvisEtudiant",
-                    label: "Ajouter un Avis",
-                    link: "/AjouterAvisEtudiant",
-                    parentId: "Gestion-des-Avis",
-                    icon: "bi bi-file-earmark-plus"
+                    id: "AjouterEtudiant",
+                    label: "Ajouter un Etudiant",
+                    link: "/AjouterEtudiant",
+                    parentId: "Gestion-des-Etudiant",
+                    icon: "bi bi-person-fill-add"
                 },
                 {
-                    id: "GestionAvisEtudiant",
-                    label: "Liste Des avis",
-                    link: "/ListeAvisEtudiant",
-                    parentId: "Gestion-des-Avis",
-                    icon: "bi bi-list-ul"
+                    id: "GestionEtudiant",
+                    label: "Liste Des Etudiants",
+                    link: "/ListeEtudiants",
+                    parentId: "Gestion-des-Etudiants",
+                    icon: "bi bi-person-lines-fill"
                 },
             ],
            
         },
-        // avis enseignant
+        // gestion enseignant
         {
-            id: "Avis-enseignant",
-            label: "Avis Enseignant",
+            id: "gestion-enseignant",
+            label: "Gestion Enseignants",
             link: "/#",
-            icon: "bi bi-megaphone",
+            icon: "bi bi-person-fill-gear",
             click: function (e: any) {
                 e.preventDefault();
                 setIsAvisEnseignant(!isAvisEnseignant);
@@ -141,28 +150,28 @@ const Navdata = () => {
             stateVariables: isAvisEnseignant,
             subItems: [
                 {
-                    id: "AjouterAvisEnseignant",
-                    label: "Ajouter un Avis",
-                    link: "/AjouterAvisEnseignant",
-                    parentId: "Avis-enseignant",
-                    icon: "bi bi-file-earmark-plus"
+                    id: "AjouterEnseignant",
+                    label: "Ajouter un Enseignant",
+                    link: "/AjouterEnseignant",
+                    parentId: "Gestion-enseignant",
+                    icon: "bi bi-person-fill-add"
                 },
                 {
-                    id: "GestionAvisEnseignant",
-                    label: "Liste Des avis",
-                    link: "/ListeAvisEnseignant",
-                    parentId: "Avis-enseignant",
-                    icon: "bi bi-list-ul"
+                    id: "GestionEnseignant",
+                    label: "Liste Des Enseignants",
+                    link: "/ListeEnseignants",
+                    parentId: "Gestion-enseignant",
+                    icon: "bi bi-person-lines-fill"
                 },
             ],
            
         },
         //avis personnel
         {
-            id: "Avis-Personnel",
-            label: "Avis Personnel",
+            id: "Gestion-Personnel",
+            label: "Gestion Personnels",
             link: "/#",
-            icon: "bi bi-megaphone",
+            icon: "bi bi-person-fill-gear",
             click: function (e: any) {
                 e.preventDefault();
                 setIsAvisPersonnel(!isAvisPersonnel);
@@ -172,84 +181,123 @@ const Navdata = () => {
             stateVariables: isAvisPersonnel,
             subItems: [
                 {
-                    id: "AjouterAvisPersonnel",
-                    label: "Ajouter un Avis",
-                    link: "/AjouterAvisPersonnel",
-                    parentId: "Avis-Personnel",
-                    icon: "bi bi-file-earmark-plus"
+                    id: "AjouterPersonnel",
+                    label: "Ajouter un Personnel",
+                    link: "/AjouterPersonnel",
+                    parentId: "Gestion-Personnel",
+                    icon: "bi bi-person-fill-add"
                 },
                 {
-                    id: "GestionAvisPersonnel",
-                    label: "Liste Des avis",
-                    link: "/ListeAvisPersonnel",
-                    parentId: "Avis-Personnel",
-                    icon: "bi bi-list-ul"
+                    id: "GestionPersonnel",
+                    label: "Liste Des Personnels",
+                    link: "/ListePersonnels",
+                    parentId: "Gestion-Personnel",
+                    icon: "bi bi-person-lines-fill"
                 },
             ],
            
         },
-        {
-            id: "Gestion-des-avis-Enseignants",
-            label: "Gestion des Enseignants",
-            link: "/GestionEnseignant",
-            icon: "bi bi-person-gear",
+        // {
+        //     id: "Gestion-des-avis-Enseignants",
+        //     label: "Gestion des Enseignants",
+        //     link: "/GestionEnseignant",
+        //     icon: "bi bi-person-gear",
            
-        },
+        // },
        
-        {
-            id: "Demande-enseignants",
-            label: "Demande Enseignants",
-            link: "/DemandeEnseignant",
-            icon: "bi bi-telephone-forward-fill",
+        // {
+        //     id: "Demande-enseignants",
+        //     label: "Demande Enseignants",
+        //     link: "/DemandeEnseignant",
+        //     icon: "bi bi-telephone-forward-fill",
            
-        },
-        {
-            id: "Réclamation-enseignants",
-            label: "Réclamation Enseignants",
-            link: "/ReclamationEnseignant",
-            icon: "bi bi-pencil-square",
+        // },
+        // {
+        //     id: "Réclamation-enseignants",
+        //     label: "Réclamation Enseignants",
+        //     link: "/ReclamationEnseignant",
+        //     icon: "bi bi-pencil-square",
            
-        },
-        {
-            id: "Avis-rattrapage",
-            label: "Avis Rattrapage",
-            link: "/AvisRattrapage",
-            icon: "bi bi-book-half",
+        // },
+        // {
+        //     id: "Avis-rattrapage",
+        //     label: "Avis Rattrapage",
+        //     link: "/AvisRattrapage",
+        //     icon: "bi bi-book-half",
            
-        },
+        // },
        
-        {
-            id: "gestionPresence",
-            label: "Gestion des Présences",
-            icon: "bi bi-person-check",
-            link: "/#",
-            click: function (e: any) {
-                e.preventDefault();
-                setIsOrder(!isOrder);
-                setIscurrentState('Orders');
-                updateIconSidebar(e);
-            },
-            stateVariables: isOrder,
-            subItems: [
-                {
-                    id: "Pointages-enseignants",
-                    label: "Pointage Enseignant",
-                    link: "/orders-list-view",
-                    parentId: "gestionPresence",
-                    icon: "bi bi-fingerprint"
-                },
-                {
-                    id: "Absence-enseignant",
-                    label: "Absence Enseignant",
-                    link: "/orders-overview",
-                    parentId: "gestionPresence",
-                    icon: "bi bi-person-exclamation"
-                },
-            ],
-        },
+        // {
+        //     id: "gestionPresence",
+        //     label: "Gestion des Présences",
+        //     icon: "bi bi-person-check",
+        //     link: "/#",
+        //     click: function (e: any) {
+        //         e.preventDefault();
+        //         setIsOrder(!isOrder);
+        //         setIscurrentState('Orders');
+        //         updateIconSidebar(e);
+        //     },
+        //     stateVariables: isOrder,
+        //     subItems: [
+        //         {
+        //             id: "Pointages-enseignants",
+        //             label: "Pointage Enseignant",
+        //             link: "/orders-list-view",
+        //             parentId: "gestionPresence",
+        //             icon: "bi bi-fingerprint"
+        //         },
+        //         {
+        //             id: "Absence-enseignant",
+        //             label: "Absence Enseignant",
+        //             link: "/orders-overview",
+        //             parentId: "gestionPresence",
+        //             icon: "bi bi-person-exclamation"
+        //         },
+        //     ],
+        // },
+        // {
+        //     id: "parametre",
+        //     label: "Paramètres Comptes",
+        //     icon: "bi bi-sliders",
+        //     link: "/#",
+        //     click: function (e: any) {
+        //         e.preventDefault();
+        //         setIsParametre(!isParametre);
+        //         setIscurrentState('Parametre');
+        //         updateIconSidebar(e);
+        //     },
+        //     stateVariables: isParametre,
+        //     subItems: [
+        //         {
+        //             id: "Etudiants",
+        //             label: "Etudiants",
+        //             link: "/parametre/parametre-etudiants",
+        //             parentId: "parametre",
+        //             icon: "bi bi-mortarboard-fill"
+        //         },
+        //         {
+        //             id: "Enseignants",
+        //             label: "Enseignants",
+        //             link: "/parametre/parametre-enseignants",
+        //             parentId: "parametre",
+        //             icon: "bi bi-person-fill"
+        //         },
+        //         {
+        //             id: "Personnels",
+        //             label: "Personnels",
+        //             link: "/parametre/parametre-personnels",
+        //             parentId: "parametre",
+        //             icon: "bi bi-person-workspace"
+        //         },
+               
+        //     ],
+            
+        // },
+       
         {
             id: "parametre",
-            label: "Paramètres",
+            label: "Paramètres Comptes",
             icon: "bi bi-sliders",
             link: "/#",
             click: function (e: any) {
@@ -259,335 +307,165 @@ const Navdata = () => {
                 updateIconSidebar(e);
             },
             stateVariables: isParametre,
-            subItems: [
+            subItems: [  
                 {
-                    id: "specialite-enseignants",
-                    label: "Spécialité Enseignant",
-                    link: "/orders-list-view",
-                    parentId: "parametre",
-                    icon: "bi bi-award"
+                    id: "Etudiants",
+                    label: "Etudiants",
+                    icon: "bi bi-mortarboard-fill",
+                    link: "",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsLevel1(!isLevel1);
+                    },
+                    stateVariables: isLevel1,
+                    childItems: [
+                        { id: 1, label: "Etat", link: "/parametre/etat-etudiants" , icon:"bi bi-person-fill-exclamation"},
+                        { id: 1, label: "Inscription", link: "/parametre/inscription-etudiants",  icon: "bi bi-person-plus-fill"},
+                       
+                    ]
                 },
                 {
-                    id: "Poste-enseignants",
-                    label: "Poste Enseignant",
-                    link: "/orders-overview",
-                    parentId: "parametre",
-                    icon: "bi bi-file-person"
+                    id: "Enseignants",
+                    label: "Enseignants",
+                    icon: "bi bi-briefcase-fill",
+                    link: "/parametre/parametre-enseignants",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsLevel2(!isLevel2);
+                    },
+                    stateVariables: isLevel2,
+                    childItems: [
+                        { id: 1, label: "Etat", link: "/parametre/etat-enseignants", icon: "bi bi-person-fill-exclamation" },
+                        { id: 1, label: "Grade", link: "/parametre/grade-enseignants", icon: "bi bi-award-fill"},
+                        { id: 1, label: "Poste", link: "/parametre/poste-enseignants", icon: "bi bi-book"},
+                        { id: 1, label: "Spécialité", link: "/parametre/specialite-enseignants", icon: "bi bi-briefcase-fill"},
+                       
+                    ]
                 },
                 {
-                    id: "Grade-enseignants",
-                    label: "Grade Enseignant",
-                    link: "/orders-overview",
-                    parentId: "parametre",
-                    icon: "bi bi-stack"
-                },
-                {
-                    id: "Etat-enseignants",
-                    label: "Etat Enseignant",
-                    link: "/orders-overview",
-                    parentId: "parametre",
-                    icon: "bi bi-bag-check-fill"
+                    id: "Personnels",
+                    label: "Personnels",
+                    icon: "bi bi-person-workspace",
+                    link: "/parametre/parametre-personnels",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsLevel3(!isLevel3);
+                    },
+                    stateVariables: isLevel3,
+                    childItems: [
+                        { id: 1, label: "Etat", link: "/parametre/etat-personnels", icon: "bi bi-person-fill-exclamation"},
+                        { id: 1, label: "Grade", link: "/parametre/grade-personnels", icon: "bi bi-award-fill" },
+                        { id: 1, label: "Poste", link: "/parametre/poste-personnels", icon: "bi bi-book"},
+                        { id: 1, label: "Catégorie", link: "/parametre/categorie-personnels" , icon :"bi bi-grid"},
+                       
+                    ]
                 },
             ],
         },
-        // {
-        //     id: "calendar",
-        //     label: "Calendar",
-        //     icon: "bi bi-calendar-week",
-        //     link: "/calendar",
-        // },
-        // {
-        //     id: "seller",
-        //     label: "Sellers",
-        //     icon: "bi bi-binoculars",
-        //     link: "/#",
-        //     click: function (e: any) {
-        //         e.preventDefault();
-        //         setIsSellers(!isSellers);
-        //         setIscurrentState('Sellers');
-        //         updateIconSidebar(e);
-        //     },
-        //     stateVariables: isSellers,
-        //     subItems: [
-        //         {
-        //             id: "listview",
-        //             label: "List View",
-        //             link: "/sellers-list-view",
-        //             parentId: "seller",
-        //         },
-        //         {
-        //             id: "gridview",
-        //             label: "Grid View",
-        //             link: "/seller-grid-view",
-        //             parentId: "seller",
-        //         },
-        //         {
-        //             id: "overview",
-        //             label: "Overview",
-        //             link: "/seller-overview",
-        //             parentId: "seller",
-        //         },
-        //     ],
-        // },
-        // {
-        //     id: "invoice",
-        //     label: "Invoice",
-        //     icon: "bi bi-archive",
-        //     link: "/#",
-        //     click: function (e: any) {
-        //         e.preventDefault();
-        //         setIsInvoice(!isInvoice);
-        //         setIscurrentState('Invoice');
-        //         updateIconSidebar(e);
-        //     },
-        //     stateVariables: isInvoice,
-        //     subItems: [
-        //         {
-        //             id: "listview",
-        //             label: "List View",
-        //             link: "/invoices-list",
-        //             parentId: "invoice",
-        //         },
-        //         {
-        //             id: "overview",
-        //             label: "Overview",
-        //             link: "/invoices-details",
-        //             parentId: "invoice",
-        //         },
-        //         {
-        //             id: "createinvoice",
-        //             label: "Create Invoice",
-        //             link: "/invoices-create",
-        //             parentId: "invoice",
-        //         },
-        //     ],
-        // },
-        // {
-        //     id: "userslist",
-        //     label: "Users List",
-        //     icon: "bi bi-person-bounding-box",
-        //     link: "/users-list",
-        // },
-        // {
-        //     id: "shipping",
-        //     label: "Shipping",
-        //     icon: "bi bi-truck",
-        //     link: "/#",
-        //     click: function (e: any) {
-        //         e.preventDefault();
-        //         setIsShipping(!isShipping);
-        //         setIscurrentState('Shipping');
-        //         updateIconSidebar(e);
-        //     },
-        //     stateVariables: isShipping,
-        //     subItems: [
-        //         {
-        //             id: "shippinglist",
-        //             label: "Shipping List",
-        //             link: "/shipping-list",
-        //             parentId: "shipping",
-        //         },
-        //         {
-        //             id: "shipments",
-        //             label: "Shipments",
-        //             link: "/shipments",
-        //             parentId: "shipping",
-        //         },
-        //     ],
-        // },
-        // {
-        //     id: "coupons",
-        //     label: "Coupons",
-        //     icon: "bi bi-tag",
-        //     link: "/coupons",
-        // },
-        // {
-        //     id: "reviews-ratings",
-        //     label: "Reviews & Ratings",
-        //     icon: "bi bi-star",
-        //     link: "/reviews-ratings",
-        // },
-        // {
-        //     id: "brands",
-        //     label: "Brands",
-        //     icon: "bi bi-shop",
-        //     link: "/brands",
-        // },
-        // {
-        //     id: "statistics",
-        //     label: "Statistics",
-        //     icon: "bi bi-pie-chart",
-        //     link: "/statistics",
-        // },
-        // {
-        //     id: "localization",
-        //     label: "Localization",
-        //     icon: "bi bi-coin",
-        //     link: "/#",
-        //     click: function (e: any) {
-        //         e.preventDefault();
-        //         setIsLocalization(!isLocalization);
-        //         setIscurrentState('Localization');
-        //         updateIconSidebar(e);
-        //     },
-        //     stateVariables: isLocalization,
-        //     subItems: [
-        //         {
-        //             id: "transactions",
-        //             label: "Transactions",
-        //             link: "/transactions",
-        //             parentId: "localization",
-        //         },
-        //         {
-        //             id: "currency-rates",
-        //             label: "Currency Rates",
-        //             link: "/currency-rates",
-        //             parentId: "localization",
-        //         },
-        //     ],
-        // },
-        // {
-        //     id: "accounts",
-        //     label: "Accounts",
-        //     icon: "bi bi-person-circle",
-        //     link: "/#",
-        //     click: function (e: any) {
-        //         e.preventDefault();
-        //         setIsAuth(!isAuth);
-        //         setIscurrentState('Auth');
-        //         updateIconSidebar(e);
-        //     },
-        //     stateVariables: isAuth,
-        //     subItems: [
-        //         {
-        //             id: "myAccount",
-        //             label: "My Accounts",
-        //             link: "/account",
-        //             parentId: "account",
-        //         },
-        //         {
-        //             id: "settings",
-        //             label: "Settings",
-        //             link: "/settings",
-        //             parentId: "account",
-        //         },
-        //         {
-        //             id: "signup",
-        //             label: "Sign Up",
-        //             link: "/auth-signup-basic",
-        //             parentId: "account",
-        //         },
-        //         {
-        //             id: "signin",
-        //             label: "Sign In",
-        //             link: "/auth-signin-basic",
-        //             parentId: "account",
-        //         },
-        //         {
-        //             id: "password-reset",
-        //             label: "Password Reset",
-        //             link: "/auth-pass-reset-basic",
-        //             parentId: "account",
-        //         },
-        //         {
-        //             id: "password-create",
-        //             label: "Password Create",
-        //             link: "/auth-pass-change-basic",
-        //             parentId: "account",
-        //         },
-        //         {
-        //             id: "success-message",
-        //             label: "Success Message",
-        //             link: "/auth-success-msg-basic",
-        //             parentId: "account",
-        //         },
-        //         {
-        //             id: "two-step-verify",
-        //             label: "Two Step Verify",
-        //             link: "/auth-twostep-basic",
-        //             parentId: "account",
-        //         },
-        //         {
-        //             id: "logout",
-        //             label: "Logout",
-        //             link: "/auth-logout-basic",
-        //             parentId: "account",
-        //         },
-        //         {
-        //             id: "auth-404",
-        //             label: "Error 404",
-        //             link: "/auth-404",
-        //             parentId: "account",
-        //         },
-        //         {
-        //             id: "auth-500",
-        //             label: "Error 500",
-        //             link: "/auth-500",
-        //             parentId: "account",
-        //         },
-        //         {
-        //             id: "coming-soon",
-        //             label: "Coming Soon",
-        //             link: "/coming-soon",
-        //             parentId: "account",
-        //         },
-        //     ],
-        // },
-        // {
-        //     id: "components",
-        //     label: "Components",
-        //     icon: "bi bi-layers",
-        //     link: "//themes.themesbrand.com/toner/react/components/index",
-        //     isBadgeColorCustom : true,
-        //     badgeName : "v1.0",
-        //     badgeColor : "secondary"
-
-        // },
-        // {
-        //     id: "multilevel",
-        //     label: "Multi Level",
-        //     icon: "bi bi-share",
-        //     link: "/#",
-        //     click: function (e: any) {
-        //         e.preventDefault();
-        //         setIsMultiLevel(!isMultiLevel);
-        //         setIscurrentState('MuliLevel');
-        //         updateIconSidebar(e);
-        //     },
-        //     stateVariables: isMultiLevel,
-        //     subItems: [
-        //         { id: "level1.1", label: "Level 1.1", link: "/#", parentId: "multilevel" },
-        //         {
-        //             id: "level1.2",
-        //             label: "Level 1.2",
-        //             link: "/#",
-        //             isChildItem: true,
-        //             click: function (e: any) {
-        //                 e.preventDefault();
-        //                 setIsLevel1(!isLevel1);
-        //             },
-        //             stateVariables: isLevel1,
-        //             childItems: [
-        //                 { id: 1, label: "Level 2.1", link: "/#" },
-        //                 {
-        //                     id: "level2.2",
-        //                     label: "Level 2.2",
-        //                     link: "/#",
-        //                     isChildItem: true,
-        //                     click: function (e: any) {
-        //                         e.preventDefault();
-        //                         setIsLevel2(!isLevel2);
-        //                     },
-        //                     stateVariables: isLevel2,
-        //                     childItems: [
-        //                         { id: 1, label: "Level 3.1", link: "/#" },
-        //                         { id: 2, label: "Level 3.2", link: "/#" },
-        //                     ]
-        //                 },
-        //             ]
-        //         },
-        //     ],
-        // },
+        {
+            id: "departement",
+            label: "Gestion Département",
+            icon: "bi bi-house-gear-fill",
+            link: "/#",
+            click: function (e: any) {
+                e.preventDefault();
+                setIsDeaprtement(!isDeaprtement);
+                setIscurrentState('Departement');
+                updateIconSidebar(e);
+            },
+            stateVariables: isDeaprtement,
+            subItems: [  
+                {
+                    id: "matieres",
+                    label: "Matières",
+                    icon: "bi bi-journals",
+                    link: "",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsLevel1(!isLevel1);
+                    },
+                    stateVariables: isLevel1,
+                    childItems: [
+                        { id: 1, label: "Liste Des Matières", link: "/gestion-matieres/liste-matieres" , icon:"bi bi-journal-text"},   
+                       
+                    ]
+                },
+                {
+                    id: "salles",
+                    label: "Gestions Des Salles",
+                    icon: "bi bi-door-closed-fill",
+                    link: "",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsLevel2(!isLevel2);
+                    },
+                    stateVariables: isLevel2,
+                    childItems: [
+                        { id: 1, label: "Liste Des Salles", link: "/gestion-salles/liste-salles" , icon:"bi bi-person-fill-exclamation"},
+                        // { id: 1, label: "Ajouter Une Salle", link: "/gestion-salles/Ajout-salle",  icon: "bi bi-person-plus-fill"},
+                       
+                    ]
+                },
+                {
+                    id: "classes",
+                    label: "Classes",
+                    icon: "bi bi-building",
+                    link: "",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsLevel3(!isLevel3);
+                    },
+                    stateVariables: isLevel3,
+                    childItems: [
+                        { id: 1, label: "Liste des classes", link: "/gestion-classes/liste-classes" , icon:"bi bi-building-gear"},
+                        { id: 1, label: "Ajouter un niveau", link: "/gestion-classes/Ajout-niveau",  icon: "bi bi-plus-lg"},
+                        { id: 1, label: "Ajouter une séction", link: "/gestion-classes/Ajout-section",  icon: "bi bi-plus-lg"},
+                       
+                    ]
+                },
+                {
+                    id: "departements",
+                    label: "Départements",
+                    icon: "bi bi-house-gear-fill",
+                    link: "",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsLevel4(!isLevel4);
+                    },
+                    stateVariables: isLevel4,
+                    childItems: [
+                        { id: 1, label: "Liste Des Départements", link: "/gestion-departements/liste-departements" , icon:"bi bi-diagram-3-fill"},
+                        // { id: 1, label: "Ajouter Un Département", link: "/gestion-departements/Ajout-departement",  icon: "bi bi-person-plus-fill"},
+                       
+                    ]
+                },
+                {
+                    id: "emplois",
+                    label: "Emplois de Temps Enseignants",
+                    icon: "bi bi-calendar-week-fill",
+                    link: "",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsLevel5(!isLevel5);
+                    },
+                    stateVariables: isLevel5,
+                    childItems: [
+                        { id: 1, label: "Liste Des Emplois", link: "/gestion-emplois/liste-emplois" , icon:"bi bi-list-task"},
+                        // { id: 1, label: "Ajouter Un Département", link: "/gestion-departements/Ajout-departement",  icon: "bi bi-person-plus-fill"},
+                       
+                    ]
+                },
+            ],
+        },
+      
 
     ];
     return <React.Fragment>{menuItems}</React.Fragment>;

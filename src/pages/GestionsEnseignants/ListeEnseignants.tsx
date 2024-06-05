@@ -4,27 +4,24 @@ import Breadcrumb from 'Common/BreadCrumb';
 import CountUp from 'react-countup';
 import { Link, useNavigate } from 'react-router-dom';
 
-import Flatpickr from "react-flatpickr";
+import ListViewEnseignants from './ListViewEnseignants';
 
-import avatar2 from "../../assets/images/users/avatar-2.jpg"
-import ListViewTable from '../GestionsEtudiants/listViewTable';
+const ListEnseignants = () => {
 
-const GestionEnseignant = () => {
-
-    document.title = "List View - Sellers | Toner eCommerce + Admin React Template";
+    document.title = "Liste Des Enseignants | Application Smart Institute";
 
     const navigate = useNavigate();
 
     const [modal_AddEnseignantModals, setmodal_AddEnseignantModals] = useState<boolean>(false);
     function tog_AddEnseignantModals() {
-        navigate("/GestionEnseignant/AjouterEnseignant")
+        navigate("/AjouterEnseignant")
     }
 
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumb title="Gestion des Enseignants" pageTitle="Dashboard" />
+                    <Breadcrumb title="Gestion des Enseignants" pageTitle="Liste Des Enseignants" />
                     <Row>
                         <Col xxl={3} md={6}>
                             <Card className="card-height-100 bg-warning-subtle border-0 overflow-hidden">
@@ -288,7 +285,7 @@ const GestionEnseignant = () => {
                                 <Card.Body className='p-0'>
                                     {/* <div className="table-responsive table-card mb-1"> */}
                                         <table className="table align-middle table-nowrap" id="customerTable">
-                                        <ListViewTable />
+                                        <ListViewEnseignants />
                                         </table>
                                         <div className="noresult" style={{ display: "none" }}>
                                             <div className="text-center py-4">
@@ -312,4 +309,4 @@ const GestionEnseignant = () => {
     );
 }
 
-export default GestionEnseignant;
+export default ListEnseignants;

@@ -1,31 +1,39 @@
-import React, { useState } from 'react';
-import { Button, Card, Col, Container, Dropdown, Form, Modal, Row } from 'react-bootstrap';
-import Breadcrumb from 'Common/BreadCrumb';
-import CountUp from 'react-countup';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Dropdown,
+  Form,
+  Modal,
+  Row,
+} from "react-bootstrap";
+import Breadcrumb from "Common/BreadCrumb";
+import CountUp from "react-countup";
+import { Link, useNavigate } from "react-router-dom";
+import ListViewSpecialiteEnseignants from "./ListViewSpecialiteEnseignants";
 
-import Flatpickr from "react-flatpickr";
 
-import avatar2 from "../../assets/images/users/avatar-2.jpg"
-import ListViewTable from '../GestionsEtudiants/listViewTable';
 
-const GestionEnseignant = () => {
+const ListSpecialiteEnseignants = () => {
+  document.title =
+    "Liste Spécialités Des Enseignants | Application Smart Institute";
 
-    document.title = "List View - Sellers | Toner eCommerce + Admin React Template";
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const [modal_AddParametreModals, setmodal_AddParametreModals] =
+    useState<boolean>(false);
+  function tog_AddParametreModals() {
+    setmodal_AddParametreModals(!modal_AddParametreModals);
+  }
 
-    const [modal_AddEnseignantModals, setmodal_AddEnseignantModals] = useState<boolean>(false);
-    function tog_AddEnseignantModals() {
-        navigate("/GestionEnseignant/AjouterEnseignant")
-    }
-
-    return (
-        <React.Fragment>
-            <div className="page-content">
-                <Container fluid={true}>
-                    <Breadcrumb title="Gestion des Enseignants" pageTitle="Dashboard" />
-                    <Row>
+  return (
+    <React.Fragment>
+      <div className="page-content">
+        <Container fluid={true}>
+          <Breadcrumb title="Paramètres Des Enseignants" pageTitle="Liste Spécialités Des Enseignants" />
+          {/* <Row>
                         <Col xxl={3} md={6}>
                             <Card className="card-height-100 bg-warning-subtle border-0 overflow-hidden">
                                 <div className="position-absolute end-0 start-0 top-0 z-0">
@@ -155,7 +163,7 @@ const GestionEnseignant = () => {
                                 </Card.Body>
                             </Card>
                         </Col>
-                        {/* <Col xxl={3} md={6}>
+                        <Col xxl={3} md={6}>
                             <Card className="bg-light border-0">
                                 <Card.Body className="p-3">
                                     <div className="p-3 bg-white rounded">
@@ -171,29 +179,37 @@ const GestionEnseignant = () => {
                                     </div>
                                 </Card.Body>
                             </Card>
-                        </Col> */}
-                    </Row>
+                        </Col>
+                    </Row> */}
 
-                    <Row id="sellersList">
-                        <Col lg={12}>
-                            <Card>
-                                <Card.Body>
-                                    <Row className="g-3">
-                                        <Col lg={3}>
-                                            <div className="search-box">
-                                                <input type="text" className="form-control search" placeholder="Chercher..." />
-                                                <i className="ri-search-line search-icon"></i>
-                                            </div>
-                                        </Col>
-                                        <Col className="col-lg-auto">
-                                            <select className="form-select" id="idStatus" name="choices-single-default">
-                                                <option defaultValue="All">Status</option>
-                                                <option value="All">tous</option>
-                                                <option value="Active">Activé</option>
-                                                <option value="Inactive">Desactivé</option>
-                                            </select>
-                                        </Col>
-                                        {/* <Col className="col-lg-auto">
+          <Row id="sellersList">
+            <Col lg={12}>
+              <Card>
+                <Card.Body>
+                  <Row className="g-3">
+                    <Col lg={3}>
+                      <div className="search-box">
+                        <input
+                          type="text"
+                          className="form-control search"
+                          placeholder="Chercher..."
+                        />
+                        <i className="ri-search-line search-icon"></i>
+                      </div>
+                    </Col>
+                    <Col className="col-lg-auto">
+                      <select
+                        className="form-select"
+                        id="idStatus"
+                        name="choices-single-default"
+                      >
+                        <option defaultValue="All">Status</option>
+                        <option value="All">tous</option>
+                        <option value="Active">Activé</option>
+                        <option value="Inactive">Desactivé</option>
+                      </select>
+                    </Col>
+                    {/* <Col className="col-lg-auto">
                                             <select className="form-select" data-choices data-choices-search-false name="choices-single-default">
                                                 <option defaultValue="all">All</option>
                                                 <option value="Today">Today</option>
@@ -204,10 +220,16 @@ const GestionEnseignant = () => {
                                                 <option value="Last Month">Last Month</option>
                                             </select>
                                         </Col> */}
-                                        <Col className="col-lg-auto ms-auto">
-                                            <div className="hstack gap-2">
-                                                <Button variant='primary' className="add-btn"  onClick={() => tog_AddEnseignantModals()}>Ajouter Enseignant</Button>
-                                                {/* <Dropdown>
+                    <Col className="col-lg-auto ms-auto">
+                      <div className="hstack gap-2">
+                        <Button
+                          variant="primary"
+                          className="add-btn"
+                          onClick={() => tog_AddParametreModals()}
+                        >
+                          Ajouter Spécialité
+                        </Button>
+                        {/* <Dropdown>
                                                     <Dropdown.Toggle className="btn-icon btn btn-soft-dark arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <i className="ph-dots-three-outline"></i>
                                                     </Dropdown.Toggle>
@@ -217,99 +239,127 @@ const GestionEnseignant = () => {
                                                         <li><Link className="dropdown-item" to="#">Something else here</Link></li>
                                                     </Dropdown.Menu>
                                                 </Dropdown> */}
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </Card.Body>
-                            </Card>
+                      </div>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
 
-                            {/* <Modal className="fade modal-fullscreen" show={modal_AddSellerModals} onHide={() => { tog_AddSellerModals(); }} centered>
-                                <Modal.Header className="px-4 pt-4" closeButton>
-                                    <h5 className="modal-title" id="exampleModalLabel">Add Seller</h5>
-                                </Modal.Header>
-                                <Form className="tablelist-form">
-                                    <Modal.Body className="p-4">
-                                        <div id="alert-error-msg" className="d-none alert alert-danger py-2"></div>
-                                        <input type="hidden" id="id-field" />
+              <Modal
+                className="fade modal-fullscreen"
+                show={modal_AddParametreModals}
+                onHide={() => {
+                  tog_AddParametreModals();
+                }}
+                centered
+              >
+                <Modal.Header className="px-4 pt-4" closeButton>
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    Ajouter Spécialité Enseignant
+                  </h5>
+                </Modal.Header>
+                <Form className="tablelist-form">
+                  <Modal.Body className="p-4">
+                    <div
+                      id="alert-error-msg"
+                      className="d-none alert alert-danger py-2"
+                    ></div>
+                    <input type="hidden" id="id-field" />
 
-                                        <div className="mb-3">
-                                            <Form.Label htmlFor="seller-name-field">Seller Name</Form.Label>
-                                            <Form.Control type="text" id="seller-name-field" placeholder="Enter Seller Name" required />
-                                        </div>
-                                        <div className="mb-3">
-                                            <Form.Label htmlFor="item-stock-field">Item Stock</Form.Label>
-                                            <Form.Control type="text" id="item-stock-field" placeholder="Enter Item Stock" required />
-                                        </div>
-                                        <div className="mb-3">
-                                            <Form.Label htmlFor="balance-field">Balance</Form.Label>
-                                            <Form.Control type="text" id="balance-field" placeholder="Enter Balance" required />
-                                        </div>
+                    <div className="mb-3">
+                      <Form.Label htmlFor="seller-name-field">
+                        Valeur
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        id="seller-name-field"
+                        placeholder=""
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <Form.Label htmlFor="item-stock-field">
+                        Spécialité Enseignant
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        id="item-stock-field"
+                        placeholder=""
+                        required
+                      />
+                    </div>
 
-                                        <div className="mb-3">
-                                            <Form.Label htmlFor="email-field">Seller Email</Form.Label>
-                                            <Form.Control type="email" id="email-field" placeholder="Enter Email" required />
-                                        </div>
+                    <div
+                      className="mb-3"
+                      style={{
+                        direction: "rtl",
+                        textAlign: "right",
+                      }}
+                    >
+                      <Form.Label htmlFor="phone-field">الإختصاص</Form.Label>
+                      <Form.Control
+                        type="text"
+                        id="phone-field"
+                        placeholder=""
+                        required
+                      />
+                    </div>
+                  </Modal.Body>
+                  <div className="modal-footer">
+                    <div className="hstack gap-2 justify-content-end">
+                      <Button
+                        className="btn-ghost-danger"
+                        onClick={() => {
+                          tog_AddParametreModals();
+                        }}
+                      >
+                        Fermer
+                      </Button>
+                      <Button variant="success" id="add-btn">
+                        Ajouter
+                      </Button>
+                    </div>
+                  </div>
+                </Form>
+              </Modal>
 
-                                        <div className="mb-3">
-                                            <Form.Label htmlFor="phone-field">Phone</Form.Label>
-                                            <Form.Control type="text" id="phone-field" placeholder="Enter Phone" required />
-                                        </div>
+              <Card>
+                <Card.Body className="p-0">
+                  {/* <div className="table-responsive table-card mb-1"> */}
+                  <table
+                    className="table align-middle table-nowrap"
+                    id="customerTable"
+                  >
+                    <ListViewSpecialiteEnseignants />
+                  </table>
+                  <div className="noresult" style={{ display: "none" }}>
+                    <div className="text-center py-4">
+                      <div className="avatar-md mx-auto mb-4">
+                        <div className="avatar-title bg-primary-subtle text-primary rounded-circle fs-24">
+                          <i className="bi bi-search"></i>
+                        </div>
+                      </div>
+                      <h5 className="mt-2">Sorry! No Result Found</h5>
+                      <p className="text-muted mb-0">
+                        We've searched more than 150+ seller We did not find any
+                        seller for you search.
+                      </p>
+                    </div>
+                  </div>
+                  {/* </div> */}
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    </React.Fragment>
+  );
+};
 
-                                        <div className="mb-3">
-                                            <Form.Label htmlFor="date-field">Create Date</Form.Label>
-                                            <Flatpickr
-                                                className="form-control flatpickr-input"
-                                                placeholder='Select Date-time'
-                                                options={{
-                                                    dateFormat: "d M, Y",
-                                                }}
-                                            />
-                                        </div>
+export default ListSpecialiteEnseignants;
 
-                                        <div>
-                                            <label htmlFor="account-status-field" className="form-label">Account Status</label>
-                                            <select className="form-select" required id="account-status-field">
-                                                <option defaultValue="">Select account Status</option>
-                                                <option value="Active">Active</option>
-                                                <option value="Inactive">Inactive</option>
-                                            </select>
-                                        </div>
-                                    </Modal.Body>
-                                    <div className="modal-footer">
-                                        <div className="hstack gap-2 justify-content-end">
-                                            <Button className="btn-ghost-danger" onClick={() => { tog_AddSellerModals(); }}>Close</Button>
-                                            <Button variant='success' id="add-btn">Add Seller</Button>
-                                        </div>
-                                    </div>
-                                </Form>
-                            </Modal> */}
 
-                            <Card>
-                                <Card.Body className='p-0'>
-                                    {/* <div className="table-responsive table-card mb-1"> */}
-                                        <table className="table align-middle table-nowrap" id="customerTable">
-                                        <ListViewTable />
-                                        </table>
-                                        <div className="noresult" style={{ display: "none" }}>
-                                            <div className="text-center py-4">
-                                                <div className="avatar-md mx-auto mb-4">
-                                                    <div className="avatar-title bg-primary-subtle text-primary rounded-circle fs-24">
-                                                        <i className="bi bi-search"></i>
-                                                    </div>
-                                                </div>
-                                                <h5 className="mt-2">Sorry! No Result Found</h5>
-                                                <p className="text-muted mb-0">We've searched more than 150+ seller We did not find any seller for you search.</p>
-                                            </div>
-                                        </div>
-                                    {/* </div> */}
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        </React.Fragment>
-    );
-}
 
-export default GestionEnseignant;
+
+    

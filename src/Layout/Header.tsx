@@ -116,7 +116,7 @@ const Header = () => {
                                         <input
                                             type="text"
                                             className="form-control form-control-lg border-2"
-                                            placeholder="Search for toner..."
+                                            placeholder="Chercher..."
                                             autoComplete="off"
                                             ref={searchInputRef}
                                             id="search-options"
@@ -132,10 +132,10 @@ const Header = () => {
                             </Modal>
 
                             {/* Browse by Apps Dropdown */}
-                            <BrowseAppsDropdown />
+                            {/* <BrowseAppsDropdown /> */}
 
                             {/* My Cart Dropdown */}
-                            <MyCartDropdown />
+                            {/* <MyCartDropdown /> */}
 
                             {/* FullScreenDropdown */}
                             <FullScreenDropdown />
