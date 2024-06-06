@@ -8,8 +8,8 @@ import Flatpickr from "react-flatpickr";
 import dummyImg from "../../assets/images/users/user-dummy-img.jpg"
 import { Link } from 'react-router-dom';
 
-const ReclamationEnseignant = () => {
-    document.title = "Demande Enseignant| Smart Institute";
+const ListeAvisEtudiant = () => {
+    document.title = "Avis Etudiant | Smart Institute";
     const [modal_AddUserModals, setmodal_AddUserModals] = useState<boolean>(false);
     const [isMultiDeleteButton, setIsMultiDeleteButton] = useState<boolean>(false)
     function tog_AddUserModals() {
@@ -40,73 +40,147 @@ const ReclamationEnseignant = () => {
 
     const columns = useMemo(
         () => [
+            // {
+            //     Header: (<div className="form-check">
+            //         <input className="form-check-input" type="checkbox" id="checkAll" onClick={() => checkedAll()} />
+            //     </div>),
+            //     Cell: (cellProps: any) => {
+            //         return (
+            //             <div className="form-check">
+            //                 <input className="userCheckBox form-check-input" type="checkbox" name="chk_child" value={cellProps.row.original.id} onChange={() => checkedbox()} />
+            //             </div>
+            //         );
+            //     },
+            //     id: '#',
+            // },
+            // {
+            //     Header: "ID",
+            //     accessor: "id",
+            //     disableFilters: true,
+            //     filterable: true,
+            // },
+            // {
+            //     Header: "Image",
+            //     disableFilters: true,
+            //     filterable: true,
+            //     accessor: (cellProps: any) => {
+            //         return (<div className="d-flex align-items-center gap-2">
+            //             <div className="flex-shrink-0">
+            //                 <img src={cellProps.user_img} alt="" className="avatar-xs rounded-circle user-profile-img" />
+            //             </div>
+            //             {/* <div className="flex-grow-1 ms-2 user_name">{cellProps.user_name}</div> */}
+            //         </div>)
+            //     }
+            // },
+
+           
             {
-                Header: (<div className="form-check">
-                    <input className="form-check-input" type="checkbox" id="checkAll" onClick={() => checkedAll()} />
-                </div>),
-                Cell: (cellProps: any) => {
-                    return (
-                        <div className="form-check">
-                            <input className="userCheckBox form-check-input" type="checkbox" name="chk_child" value={cellProps.row.original.id} onChange={() => checkedbox()} />
-                        </div>
-                    );
-                },
-                id: '#',
-            },
-            {
-                Header: "User Name",
+                Header: "Titre",
+                accessor: "title",
                 disableFilters: true,
                 filterable: true,
-                accessor: (cellProps: any) => {
-                    return (<div className="d-flex align-items-center gap-2">
-                        <div className="flex-shrink-0">
-                            <img src={cellProps.user_img} alt="" className="avatar-xs rounded-circle user-profile-img" />
-                        </div>
-                        <div className="flex-grow-1 ms-2 user_name">{cellProps.user_name}</div>
-                    </div>)
-                }
             },
             {
-                Header: "Email",
-                accessor: "email_id",
+                Header: "Description",
+                accessor: "",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Create Date",
-                accessor: "date",
+                Header: "Date",
+                accessor: "",
                 disableFilters: true,
                 filterable: true,
             },
-            {
-                Header: "Account Status",
-                disableFilters: true,
-                filterable: true,
-                accessor: (cellProps: any) => {
-                    switch (cellProps.status) {
-                        case "Active":
-                            return (<span className="badge bg-success-subtle text-success"> {cellProps.status}</span>)
-                        case "Inactive":
-                            return (<span className="badge bg-danger-subtle text-danger"> {cellProps.status}</span>)
-                        default:
-                            return (<span className="badge bg-success-subtle text-success"> {cellProps.status}</span>)
-                    }
-                },
-            },
+            // {
+            //     Header: "Account Status",
+            //     disableFilters: true,
+            //     filterable: true,
+            //     accessor: (cellProps: any) => {
+            //         switch (cellProps.status) {
+            //             case "Active":
+            //                 return (<span className="badge bg-success-subtle text-success"> {cellProps.status}</span>)
+            //             case "Inactive":
+            //                 return (<span className="badge bg-danger-subtle text-danger"> {cellProps.status}</span>)
+            //             default:
+            //                 return (<span className="badge bg-success-subtle text-success"> {cellProps.status}</span>)
+            //         }
+            //     },
+            // },
             {
                 Header: "Action",
                 disableFilters: true,
                 filterable: true,
                 accessor: (cellProps: any) => {
                     return (
-                        <div className="d-flex gap-2">
-                            <div className="edit">
-                                <Button variant="ghost-info" size="sm" className="btn-ghost-info btn-icon edit-item-btn"><i className="ph-pencil-line"></i></Button>
-                            </div>
-                            <div className="remove">
-                                <Button variant="ghost-danger" size="sm" className="btn-ghost-danger btn-icon remove-item-btn"><i className="ph-trash"></i></Button>
-                            </div>
-                        </div>
+                        <ul className="hstack gap-2 list-unstyled mb-0">
+              <li>
+                <Link
+                  to="/SingleAvisEtudiant"
+                  state={cellProps}
+                  className="badge bg-info-subtle text-info view-item-btn"
+                  data-bs-toggle="offcanvas"
+                >
+                  <i
+                    className="ph ph-eye"
+                    style={{
+                      transition: "transform 0.3s ease-in-out",
+                      cursor: "pointer",
+                      fontSize: "1.5em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.4)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  ></i>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="#GroupDetails"
+                  className="badge bg-success-subtle text-success edit-item-btn"
+                >
+                  <i
+                    className="ph ph-pencil-line"
+                    style={{
+                      transition: "transform 0.3s ease-in-out",
+                      cursor: "pointer",
+                      fontSize: "1.5em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.4)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  ></i>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="#"
+                  className="badge bg-danger-subtle text-danger remove-item-btn"
+                 
+                >
+                  <i
+                    className="ph ph-trash"
+                    style={{
+                      transition: "transform 0.3s ease-in-out",
+                      cursor: "pointer",
+                      fontSize: "1.5em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.4)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  ></i>
+                </Link>
+              </li>
+            </ul>
                     )
                 },
             },
@@ -118,9 +192,9 @@ const ReclamationEnseignant = () => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumb title="Users List" pageTitle="More" />
+                    <Breadcrumb title="Liste des Avis" pageTitle="More" />
 
-                    <Row>
+                    {/* <Row>
                         <Col xxl={3} md={6}>
                             <Card className="card-height-100 bg-warning-subtle border-0 overflow-hidden">
                                 <div className="position-absolute end-0 start-0 top-0 z-0">
@@ -265,7 +339,7 @@ const ReclamationEnseignant = () => {
                                 </Card.Body>
                             </Card>
                         </Col>
-                    </Row>
+                    </Row> */}
 
                     <Row id="usersList">
                         <Col lg={12}>
@@ -274,21 +348,21 @@ const ReclamationEnseignant = () => {
                                     <Row className="g-lg-2 g-4">
                                         <Col lg={3}>
                                             <div className="search-box">
-                                                <input type="text" className="form-control search" placeholder="Search for users..." />
+                                                <input type="text" className="form-control search" placeholder="Chercher un avis..." />
                                                 <i className="ri-search-line search-icon"></i>
                                             </div>
                                         </Col>
 
                                         {isMultiDeleteButton && <Button variant="danger" className="btn-icon"><i className="ri-delete-bin-2-line"></i></Button>}
 
-                                        <Col sm={3} className="col-lg-auto ms-auto">
+                                        {/* <Col sm={3} className="col-lg-auto ms-auto">
                                             <Button onClick={() => tog_AddUserModals()} variant='primary' type="button" className="w-100 add-btn">
                                                 Add User
                                             </Button>
-                                        </Col>
-                                        <Col sm={9} className="col-lg-auto">
+                                        </Col> */}
+                                        {/* <Col sm={9} className="col-lg-auto">
                                             <select className="form-select" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                <option value="all">All</option>
+                                                <option value="all">Tous</option>
                                                 <option value="Today">Today</option>
                                                 <option value="Yesterday">Yesterday</option>
                                                 <option value="Last 7 Days">Last 7 Days</option>
@@ -296,7 +370,7 @@ const ReclamationEnseignant = () => {
                                                 <option defaultValue="This Month">This Month</option>
                                                 <option value="Last Month">Last Month</option>
                                             </select>
-                                        </Col>
+                                        </Col> */}
                                     </Row>
                                 </Card.Body>
                             </Card>
@@ -396,9 +470,10 @@ const ReclamationEnseignant = () => {
                     </Modal>
 
                 </Container >
+                
             </div >
         </React.Fragment >
     );
 };
 
-export default ReclamationEnseignant;
+export default ListeAvisEtudiant;
