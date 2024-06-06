@@ -4,10 +4,6 @@ import Breadcrumb from 'Common/BreadCrumb';
 import CountUp from 'react-countup';
 import { Link, useNavigate } from 'react-router-dom';
 
-import Flatpickr from "react-flatpickr";
-
-import avatar2 from "../../assets/images/users/avatar-2.jpg"
-import ListViewTable from '../GestionsEtudiants/listViewTable';
 
 const GestionEnseignant = () => {
 
@@ -288,7 +284,7 @@ const GestionEnseignant = () => {
                                 <Card.Body className='p-0'>
                                     {/* <div className="table-responsive table-card mb-1"> */}
                                         <table className="table align-middle table-nowrap" id="customerTable">
-                                        <ListViewTable />
+                                     
                                         </table>
                                         <div className="noresult" style={{ display: "none" }}>
                                             <div className="text-center py-4">

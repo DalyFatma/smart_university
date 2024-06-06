@@ -10,16 +10,12 @@ import {
   Row,
 } from "react-bootstrap";
 import Breadcrumb from "Common/BreadCrumb";
-import CountUp from "react-countup";
 import { Link, useNavigate } from "react-router-dom";
+import { espaceTelechargement } from "Common/data/espaceTelechargement";
 import TableContainer from "Common/TableContainer";
-import { sellerList } from "Common/data";
 
-
-
-const ListEtatPersonnels = () => {
-  document.title =
-    "Liste états des personnels | Smart University";
+const ListEspaceTelechargement = () => {
+  document.title = "Liste des éspaces des téléchargements |  Smart University";
 
   const navigate = useNavigate();
 
@@ -37,27 +33,65 @@ const ListEtatPersonnels = () => {
             },
             id: '#',
         },
-      
+       
         {
-            Header: "Value",
-            accessor: "sellerName",
+            Header: "Titre",
+            accessor: "titre",
             disableFilters: true,
             filterable: true,
         },
        
         {
-            Header: "Etat Personnel",
-            accessor: "balance",
+            Header: "Description",
+            accessor: "description",
             disableFilters: true,
             filterable: true,
         },
         {
-            Header: "حالة الإداري",
-            accessor: "email",
+            Header: "Cible",
+            accessor: "category",
             disableFilters: true,
             filterable: true,
         },
-       
+        {
+          Header: "Date d'ajout",
+          accessor: "",
+          disableFilters: true,
+          filterable: true,
+      },
+        {
+            Header: "Fichier",
+            disableFilters: true,
+            filterable: true,
+            accessor: (cellProps: any) => {
+                return (
+                    <ul className="hstack gap-2 list-unstyled mb-0">
+                      <li>
+                        <Link
+                          to="#"
+                          className="badge bg-success-subtle text-success remove-item-btn"
+                        >
+                          <i
+                            className="ph bi-file-earmark-arrow-down"
+                            style={{
+                              transition: "transform 0.3s ease-in-out",
+                              cursor: "pointer",
+                              fontSize: "1.5em",
+                            }}
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.transform = "scale(1.2)")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.transform = "scale(1)")
+                            }
+                            
+                          ></i>
+                        </Link>
+                      </li>
+                    </ul>
+                  );
+            },
+        },
         {
             Header: "Action",
             disableFilters: true,
@@ -142,8 +176,11 @@ const ListEtatPersonnels = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumb title="Paramètres des personnels" pageTitle="Liste états des personnels" />
-         
+          <Breadcrumb
+            title="Espaces des téléchargements"
+            pageTitle="Liste des éspaces des téléchargements"
+          />
+
           <Row id="sellersList">
             <Col lg={12}>
               <Card>
@@ -171,7 +208,7 @@ const ListEtatPersonnels = () => {
                         <option value="Inactive">Desactivé</option>
                       </select>
                     </Col>
-                 
+
                     <Col className="col-lg-auto ms-auto">
                       <div className="hstack gap-2">
                         <Button
@@ -179,9 +216,8 @@ const ListEtatPersonnels = () => {
                           className="add-btn"
                           onClick={() => tog_AddParametreModals()}
                         >
-                          Ajouter Etat
+                          Ajouter un document
                         </Button>
-                     
                       </div>
                     </Col>
                   </Row>
@@ -198,7 +234,7 @@ const ListEtatPersonnels = () => {
               >
                 <Modal.Header className="px-4 pt-4" closeButton>
                   <h5 className="modal-title" id="exampleModalLabel">
-                    Ajouter Etat Personnel
+                    Ajouter un document
                   </h5>
                 </Modal.Header>
                 <Form className="tablelist-form">
@@ -210,20 +246,7 @@ const ListEtatPersonnels = () => {
                     <input type="hidden" id="id-field" />
 
                     <div className="mb-3">
-                      <Form.Label htmlFor="seller-name-field">
-                        Valeur
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        id="seller-name-field"
-                        placeholder=""
-                        required
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <Form.Label htmlFor="item-stock-field">
-                        Etat Personnel
-                      </Form.Label>
+                      <Form.Label htmlFor="item-stock-field">Titre</Form.Label>
                       <Form.Control
                         type="text"
                         id="item-stock-field"
@@ -232,19 +255,49 @@ const ListEtatPersonnels = () => {
                       />
                     </div>
 
-                    <div
-                      className="mb-3"
-                      style={{
-                        direction: "rtl",
-                        textAlign: "right",
-                      }}
-                    >
-                      <Form.Label htmlFor="phone-field">حالة الإداري</Form.Label>
+                    <div className="mb-3">
+                      <Form.Label htmlFor="phone-field">Description</Form.Label>
                       <Form.Control
                         type="text"
                         id="phone-field"
                         placeholder=""
                         required
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <Form.Label htmlFor="civilStatus">Cible</Form.Label>
+                      <select
+                        className="form-select text-muted"
+                        name="civilStatus"
+                        id="civilStatus"
+                        multiple
+                     
+                        // required
+                      >
+                        {/* <option value="">Saisir catégorie</option> */}
+                        <option value="Etudiant">Etudiant</option>
+                        <option value="Enseignant">Enseignant</option>
+                        <option value="Personnel">Personnel</option>
+                      </select>
+                    </div>
+
+                    <div className="mb-3">
+                      <label
+                        htmlFor="legalcardBase64String"
+                        className="form-label"
+                      >
+                        Fichier
+                      </label>
+                      <Form.Control
+                        name="legalcardBase64String"
+                        type="file"
+                        id="legalcardBase64String"
+                        accept=".pdf"
+                        placeholder="Choose File"
+                        className="text-muted"
+
+                        // required
                       />
                     </div>
                   </Modal.Body>
@@ -275,7 +328,7 @@ const ListEtatPersonnels = () => {
                   >
                     <TableContainer
                 columns={(columns || [])}
-                data={(sellerList || [])}
+                data={(espaceTelechargement || [])}
                 // isGlobalFilter={false}
                 iscustomPageSize={false}
                 isBordered={false}
@@ -311,9 +364,4 @@ const ListEtatPersonnels = () => {
   );
 };
 
-export default ListEtatPersonnels;
-
-
-
-
-    
+export default ListEspaceTelechargement;

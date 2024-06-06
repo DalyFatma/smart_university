@@ -414,7 +414,7 @@ const Navdata = () => {
                 {
                     id: "classes",
                     label: "Classes",
-                    icon: "bi bi-building",
+                    icon: "bi bi-people-fill",
                     link: "",
                     isChildItem: true,
                     click: function (e: any) {
@@ -423,7 +423,7 @@ const Navdata = () => {
                     },
                     stateVariables: isLevel3,
                     childItems: [
-                        { id: 1, label: "Liste des classes", link: "/gestion-classes/liste-classes" , icon:"bi bi-building-gear"},
+                        { id: 1, label: "Liste des classes", link: "/gestion-classes/liste-classes" , icon:"bi bi-people-fill"},
                         { id: 1, label: "Ajouter un niveau", link: "/gestion-classes/Ajout-niveau",  icon: "bi bi-plus-lg"},
                         { id: 1, label: "Ajouter une séction", link: "/gestion-classes/Ajout-section",  icon: "bi bi-plus-lg"},
                        
@@ -463,9 +463,24 @@ const Navdata = () => {
                        
                     ]
                 },
+               
             ],
         },
-      
+
+        {
+            id: "telechargement",
+            label: "Espace téléchargement",
+            icon: "bi bi-cloud-arrow-down-fill",
+            link: "/espace-telechargement",
+           
+        },
+        {
+            id: "lien",
+            label: "Liens Utils",
+            icon: "bi bi-link-45deg",
+            link: "/liens-utils",
+           
+        },
 
     ];
     return <React.Fragment>{menuItems}</React.Fragment>;

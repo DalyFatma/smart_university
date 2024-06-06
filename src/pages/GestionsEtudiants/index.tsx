@@ -5,7 +5,7 @@ import RecentOrders from './ProfilEtudiant';
 
 const Profil = () => {
 
-    document.title = "Profils | Application Smart Institute";
+    document.title = "Profils | Smart University";
 
     return (
         <React.Fragment>

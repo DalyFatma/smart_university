@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Button,
   Card,
@@ -12,13 +12,11 @@ import {
 import Breadcrumb from "Common/BreadCrumb";
 import CountUp from "react-countup";
 import { Link, useNavigate } from "react-router-dom";
-import ListViewCategoriePersonnels from "./ListViewCategoriePersonnels";
-
-
+import TableContainer from "Common/TableContainer";
+import { sellerList } from "Common/data";
 
 const ListCategoriePersonnels = () => {
-  document.title =
-    "Liste Catégories Des Personnels | Application Smart Institute";
+  document.title = "Liste catégories des personnels | Smart University";
 
   const navigate = useNavigate();
 
@@ -27,13 +25,136 @@ const ListCategoriePersonnels = () => {
   function tog_AddParametreModals() {
     setmodal_AddParametreModals(!modal_AddParametreModals);
   }
+  const columns = useMemo(
+    () => [
+      {
+        Header: (
+          <div className="form-check">
+            {" "}
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="checkAll"
+              value="option"
+            />{" "}
+          </div>
+        ),
+        Cell: (cellProps: any) => {
+          return (
+            <div className="form-check">
+              {" "}
+              <input
+                className="form-check-input"
+                type="checkbox"
+                name="chk_child"
+                defaultValue="option1"
+              />{" "}
+            </div>
+          );
+        },
+        id: "#",
+      },
+
+      {
+        Header: "Catégorie (FR)",
+        accessor: "balance",
+        disableFilters: true,
+        filterable: true,
+      },
+      {
+        Header: "Catégorie (FR)",
+        accessor: "email",
+        disableFilters: true,
+        filterable: true,
+      },
+
+      {
+        Header: "Action",
+        disableFilters: true,
+        filterable: true,
+        accessor: (cellProps: any) => {
+          return (
+            <ul className="hstack gap-2 list-unstyled mb-0">
+              <li>
+                <Link
+                  to="#"
+                  className="badge bg-info-subtle text-info view-item-btn"
+                >
+                  <i
+                    className="ph ph-eye"
+                    style={{
+                      transition: "transform 0.3s ease-in-out",
+                      cursor: "pointer",
+                      fontSize: "1.5em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.4)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  ></i>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="#"
+                  className="badge bg-primary-subtle text-primary edit-item-btn"
+                >
+                  <i
+                    className="ph ph-pencil-line"
+                    style={{
+                      transition: "transform 0.3s ease-in-out",
+                      cursor: "pointer",
+                      fontSize: "1.5em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.2)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  ></i>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="#"
+                  className="badge bg-danger-subtle text-danger remove-item-btn"
+                >
+                  <i
+                    className="ph ph-trash"
+                    style={{
+                      transition: "transform 0.3s ease-in-out",
+                      cursor: "pointer",
+                      fontSize: "1.5em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.2)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  ></i>
+                </Link>
+              </li>
+            </ul>
+          );
+        },
+      },
+    ],
+    []
+  );
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumb title="Paramètres des personnels" pageTitle="Liste catégories des personnels" />
-        
+          <Breadcrumb
+            title="Paramètres des personnels"
+            pageTitle="Liste catégories des personnels"
+          />
+
           <Row id="sellersList">
             <Col lg={12}>
               <Card>
@@ -71,7 +192,6 @@ const ListCategoriePersonnels = () => {
                         >
                           Ajouter Catégorie
                         </Button>
-
                       </div>
                     </Col>
                   </Row>
@@ -98,10 +218,10 @@ const ListCategoriePersonnels = () => {
                       className="d-none alert alert-danger py-2"
                     ></div>
                     <input type="hidden" id="id-field" />
-    
+
                     <div className="mb-3">
                       <Form.Label htmlFor="item-stock-field">
-                      Catégorie(profession)
+                        Catégorie(profession)
                       </Form.Label>
                       <Form.Control
                         type="text"
@@ -118,7 +238,9 @@ const ListCategoriePersonnels = () => {
                         textAlign: "right",
                       }}
                     >
-                      <Form.Label htmlFor="phone-field">الخطة الوظيفية</Form.Label>
+                      <Form.Label htmlFor="phone-field">
+                        الخطة الوظيفية
+                      </Form.Label>
                       <Form.Control
                         type="text"
                         id="phone-field"
@@ -152,7 +274,18 @@ const ListCategoriePersonnels = () => {
                     className="table align-middle table-nowrap"
                     id="customerTable"
                   >
-                    <ListViewCategoriePersonnels />
+                    <TableContainer
+                      columns={columns || []}
+                      data={sellerList || []}
+                      // isGlobalFilter={false}
+                      iscustomPageSize={false}
+                      isBordered={false}
+                      customPageSize={10}
+                      className="custom-header-css table align-middle table-nowrap"
+                      tableClass="table-centered align-middle table-nowrap mb-0"
+                      theadClass="text-muted table-light"
+                      SearchPlaceholder="Search Products..."
+                    />
                   </table>
                   <div className="noresult" style={{ display: "none" }}>
                     <div className="text-center py-4">
@@ -180,8 +313,3 @@ const ListCategoriePersonnels = () => {
 };
 
 export default ListCategoriePersonnels;
-
-
-
-
-    

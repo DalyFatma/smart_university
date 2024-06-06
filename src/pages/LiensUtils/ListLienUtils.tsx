@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Card,
@@ -10,12 +10,12 @@ import {
   Row,
 } from "react-bootstrap";
 import Breadcrumb from "Common/BreadCrumb";
+import CountUp from "react-countup";
 import { Link, useNavigate } from "react-router-dom";
-import TableContainer from "Common/TableContainer";
-import { sellerList } from "Common/data";
+import ListViewLienUtils from "./ListViewLienUtils";
 
-const ListGradePersonnels = () => {
-  document.title = "Liste grades des personnels | Smart University";
+const ListLienUtilst = () => {
+  document.title = "Liste des liens utils |  Smart University";
 
   const navigate = useNavigate();
 
@@ -24,133 +24,11 @@ const ListGradePersonnels = () => {
   function tog_AddParametreModals() {
     setmodal_AddParametreModals(!modal_AddParametreModals);
   }
-  const columns = useMemo(
-    () => [
-      {
-        Header: (
-          <div className="form-check">
-            {" "}
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="checkAll"
-              value="option"
-            />{" "}
-          </div>
-        ),
-        Cell: (cellProps: any) => {
-          return (
-            <div className="form-check">
-              {" "}
-              <input
-                className="form-check-input"
-                type="checkbox"
-                name="chk_child"
-                defaultValue="option1"
-              />{" "}
-            </div>
-          );
-        },
-        id: "#",
-      },
-
-      {
-        Header: "Grade (FR)",
-        accessor: "balance",
-        disableFilters: true,
-        filterable: true,
-      },
-      {
-        Header: "Grade (AR)",
-        accessor: "email",
-        disableFilters: true,
-        filterable: true,
-      },
-      {
-        Header: "Action",
-        disableFilters: true,
-        filterable: true,
-        accessor: (cellProps: any) => {
-          return (
-            <ul className="hstack gap-2 list-unstyled mb-0">
-              <li>
-                <Link
-                  to="#"
-                  className="badge bg-info-subtle text-info view-item-btn"
-                >
-                  <i
-                    className="ph ph-eye"
-                    style={{
-                      transition: "transform 0.3s ease-in-out",
-                      cursor: "pointer",
-                      fontSize: "1.5em",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.4)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                  ></i>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="#"
-                  className="badge bg-primary-subtle text-primary edit-item-btn"
-                >
-                  <i
-                    className="ph ph-pencil-line"
-                    style={{
-                      transition: "transform 0.3s ease-in-out",
-                      cursor: "pointer",
-                      fontSize: "1.5em",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.2)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                  ></i>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="#"
-                  className="badge bg-danger-subtle text-danger remove-item-btn"
-                >
-                  <i
-                    className="ph ph-trash"
-                    style={{
-                      transition: "transform 0.3s ease-in-out",
-                      cursor: "pointer",
-                      fontSize: "1.5em",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.2)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                  ></i>
-                </Link>
-              </li>
-            </ul>
-          );
-        },
-      },
-    ],
-    []
-  );
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumb
-            title="Paramètres des personnels"
-            pageTitle="Liste grades des personnels"
-          />
+          <Breadcrumb title="Liens utils" pageTitle="Liste des liens utils" />
 
           <Row id="sellersList">
             <Col lg={12}>
@@ -187,7 +65,7 @@ const ListGradePersonnels = () => {
                           className="add-btn"
                           onClick={() => tog_AddParametreModals()}
                         >
-                          Ajouter Grade
+                          Ajouter un lien 
                         </Button>
                       </div>
                     </Col>
@@ -205,7 +83,7 @@ const ListGradePersonnels = () => {
               >
                 <Modal.Header className="px-4 pt-4" closeButton>
                   <h5 className="modal-title" id="exampleModalLabel">
-                    Ajouter Grade Personnel
+                    Ajouter un lien
                   </h5>
                 </Modal.Header>
                 <Form className="tablelist-form">
@@ -217,7 +95,7 @@ const ListGradePersonnels = () => {
                     <input type="hidden" id="id-field" />
 
                     <div className="mb-3">
-                      <Form.Label htmlFor="item-stock-field">Grade</Form.Label>
+                      <Form.Label htmlFor="item-stock-field">Titre</Form.Label>
                       <Form.Control
                         type="text"
                         id="item-stock-field"
@@ -226,20 +104,41 @@ const ListGradePersonnels = () => {
                       />
                     </div>
 
-                    <div
-                      className="mb-3"
-                      style={{
-                        direction: "rtl",
-                        textAlign: "right",
-                      }}
-                    >
-                      <Form.Label htmlFor="phone-field">الرتبة</Form.Label>
+                    <div className="mb-3">
+                      <Form.Label htmlFor="phone-field">Description</Form.Label>
                       <Form.Control
                         type="text"
                         id="phone-field"
                         placeholder=""
                         required
                       />
+                    </div>
+
+                    <div className="mb-3">
+                      <Form.Label htmlFor="phone-field">URL</Form.Label>
+                      <Form.Control
+                        type="text"
+                        id="phone-field"
+                        placeholder=""
+                        required
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <Form.Label htmlFor="civilStatus">Cible</Form.Label>
+                      <select
+                        className="form-select text-muted"
+                        name="civilStatus"
+                        id="civilStatus"
+                        multiple
+                     
+                        // required
+                      >
+                        {/* <option value="">Saisir catégorie</option> */}
+                        <option value="Etudiant">Etudiant</option>
+                        <option value="Enseignant">Enseignant</option>
+                        <option value="Personnel">Personnel</option>
+                      </select>
                     </div>
                   </Modal.Body>
                   <div className="modal-footer">
@@ -267,18 +166,7 @@ const ListGradePersonnels = () => {
                     className="table align-middle table-nowrap"
                     id="customerTable"
                   >
-                    <TableContainer
-                      columns={columns || []}
-                      data={sellerList || []}
-                      // isGlobalFilter={false}
-                      iscustomPageSize={false}
-                      isBordered={false}
-                      customPageSize={10}
-                      className="custom-header-css table align-middle table-nowrap"
-                      tableClass="table-centered align-middle table-nowrap mb-0"
-                      theadClass="text-muted table-light"
-                      SearchPlaceholder="Search Products..."
-                    />
+                    <ListViewLienUtils />
                   </table>
                   <div className="noresult" style={{ display: "none" }}>
                     <div className="text-center py-4">
@@ -305,4 +193,4 @@ const ListGradePersonnels = () => {
   );
 };
 
-export default ListGradePersonnels;
+export default ListLienUtilst;

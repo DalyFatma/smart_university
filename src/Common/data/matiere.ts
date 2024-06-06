@@ -1,4 +1,4 @@
-const matiere = [
+const matieres = [
   {
     id: 1,
     codeMatiere: "MAT101",
@@ -55,4 +55,4 @@ const matiere = [
   },
 ];
 
-export { matiere };
+export { matieres };

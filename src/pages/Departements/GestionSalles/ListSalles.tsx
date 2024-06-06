@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Button,
   Card,
@@ -10,12 +10,11 @@ import {
   Row,
 } from "react-bootstrap";
 import Breadcrumb from "Common/BreadCrumb";
-import CountUp from "react-countup";
 import { Link, useNavigate } from "react-router-dom";
-import ListViewSalles from "./ListViewSalles";
 import * as XLSX from "xlsx";
 
-import {salles} from "../../../Common/data/salles"
+import { salles } from "../../../Common/data/salles";
+import TableContainer from "Common/TableContainer";
 
 const ListSalles = () => {
   document.title = "Liste des salles | Smart University";
@@ -33,11 +32,162 @@ const ListSalles = () => {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Salles");
     XLSX.writeFile(workbook, "Salles.xlsx");
   };
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: (
+          <div className="form-check">
+            {" "}
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="checkAll"
+              value="option"
+            />{" "}
+          </div>
+        ),
+        Cell: (cellProps: any) => {
+          return (
+            <div className="form-check">
+              {" "}
+              <input
+                className="form-check-input"
+                type="checkbox"
+                name="chk_child"
+                defaultValue="option1"
+              />{" "}
+            </div>
+          );
+        },
+        id: "#",
+      },
+      {
+        Header: "ID",
+        accessor: "id",
+        disableFilters: true,
+        filterable: true,
+      },
+      {
+        Header: "Salle",
+        accessor: "salle",
+        disableFilters: true,
+        filterable: true,
+      },
+
+      {
+        Header: "Emplacement",
+        accessor: "emplacement",
+        disableFilters: true,
+        filterable: true,
+      },
+      {
+        Header: "Type Salle",
+        accessor: "type",
+        disableFilters: true,
+        filterable: true,
+      },
+
+      // {
+      //     Header: "Activation",
+      //     disableFilters: true,
+      //     filterable: true,
+      //     accessor: (cellProps: any) => {
+      //         switch (cellProps.status) {
+      //             case "Activé":
+      //                 return (<span className="badge bg-success-subtle text-success text-uppercase"> {cellProps.status}</span>)
+      //             case "Desactivé":
+      //                 return (<span className="badge bg-danger-subtle text-danger text-uppercase"> {cellProps.status}</span>)
+      //             default:
+      //                 return (<span className="badge bg-success-subtle text-success text-uppercase"> {cellProps.status}</span>)
+      //         }
+      //     },
+      // },
+      {
+        Header: "Action",
+        disableFilters: true,
+        filterable: true,
+        accessor: (cellProps: any) => {
+          return (
+            <ul className="hstack gap-2 list-unstyled mb-0">
+              <li>
+                <Link
+                  to="#"
+                  className="badge bg-info-subtle text-info view-item-btn"
+                >
+                  <i
+                    className="ph ph-eye"
+                    style={{
+                      transition: "transform 0.3s ease-in-out",
+                      cursor: "pointer",
+                      fontSize: "1.5em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.4)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  ></i>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="#"
+                  className="badge bg-primary-subtle text-primary edit-item-btn"
+                >
+                  <i
+                    className="ph ph-pencil-line"
+                    style={{
+                      transition: "transform 0.3s ease-in-out",
+                      cursor: "pointer",
+                      fontSize: "1.5em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.2)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  ></i>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="#"
+                  className="badge bg-danger-subtle text-danger remove-item-btn"
+                >
+                  <i
+                    className="ph ph-trash"
+                    style={{
+                      transition: "transform 0.3s ease-in-out",
+                      cursor: "pointer",
+                      fontSize: "1.5em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.2)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  ></i>
+                </Link>
+              </li>
+            </ul>
+          );
+        },
+      },
+    ],
+    []
+  );
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumb title="Gestion des départements" pageTitle="Liste des salles" />
+          <Breadcrumb
+            title="Gestion des départements"
+            pageTitle="Liste des salles"
+          />
 
           <Row id="sellersList">
             <Col lg={12}>
@@ -67,26 +217,24 @@ const ListSalles = () => {
                       </select>
                     </Col>
                     <Col className="col-lg-auto ms-auto">
-                        <div className="hstack gap-3">
-                          <Button
-                            variant="primary"
-                            className="add-btn"
-                            onClick={() => tog_AddParametreModals()}
-                          >
-                         Ajouter salle
-                          </Button>
-                          <Button
-                            variant="primary"
-                            className="add-btn"
-                            // onClick={() => tog_ImportModals()}
-                            onClick={exportToExcel}
-                          >
-                            Importer
-                          </Button>
-                          
-                        </div>
-                      </Col>
-                 
+                      <div className="hstack gap-3">
+                        <Button
+                          variant="primary"
+                          className="add-btn"
+                          onClick={() => tog_AddParametreModals()}
+                        >
+                          Ajouter salle
+                        </Button>
+                        <Button
+                          variant="primary"
+                          className="add-btn"
+                          // onClick={() => tog_ImportModals()}
+                          onClick={exportToExcel}
+                        >
+                          Importer
+                        </Button>
+                      </div>
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>
@@ -135,9 +283,7 @@ const ListSalles = () => {
                       />
                     </div>
                     <div className="mb-3">
-                      <Form.Label htmlFor="civilStatus">
-                        Type Salle
-                      </Form.Label>
+                      <Form.Label htmlFor="civilStatus">Type Salle</Form.Label>
                       <select
                         className="form-select text-muted"
                         name="civilStatus"
@@ -150,7 +296,6 @@ const ListSalles = () => {
                         <option value="Widowed">Atelier</option>
                       </select>
                     </div>
-                  
                   </Modal.Body>
                   <div className="modal-footer">
                     <div className="hstack gap-2 justify-content-end">
@@ -177,7 +322,18 @@ const ListSalles = () => {
                     className="table align-middle table-nowrap"
                     id="customerTable"
                   >
-                    <ListViewSalles />
+                    <TableContainer
+                      columns={columns || []}
+                      data={salles || []}
+                      // isGlobalFilter={false}
+                      iscustomPageSize={false}
+                      isBordered={false}
+                      customPageSize={10}
+                      className="custom-header-css table align-middle table-nowrap"
+                      tableClass="table-centered align-middle table-nowrap mb-0"
+                      theadClass="text-muted table-light"
+                      SearchPlaceholder="Search Products..."
+                    />
                   </table>
                   <div className="noresult" style={{ display: "none" }}>
                     <div className="text-center py-4">

@@ -103,6 +103,9 @@ import ListClasses from "pages/Departements/GestionClasses/ListClasses";
 import Profil from "pages/GestionsEtudiants";
 import ListNiveau from "pages/Departements/GestionClasses/NiveauScolaire/ListNiveau";
 import ListSections from "pages/Departements/GestionClasses/Section/ListSections";
+import ListEspaceTelechargement from "pages/EspaceTelechargement/ListEspaceTelechargement";
+import ListLienUtilst from "pages/LiensUtils/ListLienUtils";
+import AffecterMatiere from "pages/AffecterMatiere/AffecterMatiere";
 
 
 
@@ -165,7 +168,9 @@ const authProtectedRoutes = [
 
   // Liste Des Matieres
   { path: "/gestion-matieres/liste-matieres", component: <ListMatieres/> },
+// Affecter matieres avec groupe
 
+{ path: "/gestion-departement/classes/affecter-matiere", component: <AffecterMatiere/>},
 
   // Liste Des Salles
   { path: "/gestion-salles/liste-salles", component: <ListSalles/> },
@@ -183,7 +188,13 @@ const authProtectedRoutes = [
 //Ajouter section
 { path: "/gestion-classes/Ajout-section", component: <ListSections /> },
 
+// Liste espaces de telechargements
+{ path: "/espace-telechargement", component: <ListEspaceTelechargement /> },
+  
 
+//liste lien utils 
+
+{ path: "/liens-utils", component: <ListLienUtilst /> },
 
 
   //avis enseignant

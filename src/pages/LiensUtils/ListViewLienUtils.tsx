@@ -1,10 +1,13 @@
+
+
+
 import React, { useMemo } from 'react';
 import TableContainer from "Common/TableContainer";
-import { sellerList } from "Common/data";
+import { LienUtils } from "Common/data/lienUtils";
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
-const ListViewPersonnels= () => {
+const ListViewLienUtils = () => {
 
     const columns = useMemo(
         () => [
@@ -15,59 +18,44 @@ const ListViewPersonnels= () => {
                 },
                 id: '#',
             },
+            // {
+            //     Header: "ID",
+            //     accessor: "id",
+            //     disableFilters: true,
+            //     filterable: true,
+            // },
             {
-                Header: "Matricule",
-                accessor: "itemStock",
-                disableFilters: true,
-                filterable: true,
-            },
-            {
-                Header: "Nom et Prénom",
-                accessor: "sellerName",
+                Header: "Titre",
+                accessor: "titre",
                 disableFilters: true,
                 filterable: true,
             },
            
             {
-                Header: "Spécialité",
-                accessor: "balance",
+                Header: "Description",
+                accessor: "description",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Département",
-                accessor: "email",
+                Header: "Cible",
+                accessor: "category",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Grade",
-                accessor: "createDate",
+                Header: "Lien",
+                accessor: "link",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Tél",
-                accessor: "phone",
+                Header: "Date d'ajout",
+                accessor: "date",
                 disableFilters: true,
                 filterable: true,
             },
-        
-            {
-                Header: "Activation",
-                disableFilters: true,
-                filterable: true,
-                accessor: (cellProps: any) => {
-                    switch (cellProps.status) {
-                        case "Activé":
-                            return (<span className="badge bg-success-subtle text-success text-uppercase"> {cellProps.status}</span>)
-                        case "Desactivé":
-                            return (<span className="badge bg-danger-subtle text-danger text-uppercase"> {cellProps.status}</span>)
-                        default:
-                            return (<span className="badge bg-success-subtle text-success text-uppercase"> {cellProps.status}</span>)
-                    }
-                },
-            },
+          
             {
                 Header: "Action",
                 disableFilters: true,
@@ -75,7 +63,7 @@ const ListViewPersonnels= () => {
                 accessor: (cellProps: any) => {
                     return (
                         <ul className="hstack gap-2 list-unstyled mb-0">
-                          <li>
+                          {/* <li>
                             <Link
                               to="#"
                               className="badge bg-info-subtle text-info view-item-btn"
@@ -96,7 +84,7 @@ const ListViewPersonnels= () => {
                                 }
                               ></i>
                             </Link>
-                          </li>
+                          </li> */}
                           <li>
                             <Link
                               to="#"
@@ -153,7 +141,7 @@ const ListViewPersonnels= () => {
         <React.Fragment>
             <TableContainer
                 columns={(columns || [])}
-                data={(sellerList || [])}
+                data={(LienUtils || [])}
                 // isGlobalFilter={false}
                 iscustomPageSize={false}
                 isBordered={false}
@@ -167,4 +155,4 @@ const ListViewPersonnels= () => {
     );
 };
 
-export default ListViewPersonnels;
+export default ListViewLienUtils;
