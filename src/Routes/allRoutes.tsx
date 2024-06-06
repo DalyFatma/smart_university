@@ -74,10 +74,6 @@ import DemandeEnseignant from "pages/Demande-enseignant/ListeDeamandeEnseiganant
 import ReclamationEnseignant from "pages/ReclamationEnseignant/ListReclamationEnseignant";
 import AjouterEnseignant from "pages/GestionsEnseignants/AjouterEnseignant";
 
-import ListeAvisEnseignant from "pages/avis-enseignant/ListeAvisEnseignant";
-import AjouterAvisEnseignant from "pages/avis-enseignant/AjouterAvisEnseignant";
-import AjouterAvisPersonnel from "pages/avis-personnel/AjouterAvisEtudiant";
-import ListeAvisPersonnel from "pages/avis-personnel/ListeAvisEtudiant";
 import AjouterEtudiant from "pages/GestionsEtudiants/AjouterEtudiant";
 import ListEtudiants from "pages/GestionsEtudiants/ListeEtudiants";
 import ListEnseignants from "pages/GestionsEnseignants/ListeEnseignants";
@@ -129,6 +125,12 @@ import EditReclamationPersonnel from "pages/ReclamationPersonnel/EditReclamation
 import SingleAvisEtudiant from "pages/AvisEtudiant/SingleAvisEtudiant";
 import ListeAvisEtudiant from "pages/AvisEtudiant/ListAvisEtudiant";
 import AjouterAvisEtudiant from "pages/AvisEtudiant/AjouterAvisEtudiant";
+import SingleAvisEnseignant from "pages/AvisEnseignant/SingleAvisEnseignant";
+import ListeAvisEnseignant from "pages/AvisEnseignant/ListeAvisEnseignant";
+import AjouterAvisEnseignant from "pages/AvisEnseignant/AjouterAvisEnseignant";
+import SingleAvisPersonnel from "pages/AvisPersonnel/SingleAvisPersonnel";
+import ListeAvisPersonnel from "pages/AvisPersonnel/ListeAvisPersonnel";
+import AjouterAvisPersonnel from "pages/AvisPersonnel/AjouterAvisPersonnel";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -290,12 +292,14 @@ const authProtectedRoutes = [
     component: <EditReclamationPersonnel />,
   },
 
-  //avis enseignant
-  { path: "/ListeAvisEnseignant", component: <ListeAvisEnseignant /> },
-  { path: "/AjouterAvisEnseignant", component: <AjouterAvisEnseignant /> },
-  // avis personnel
-  { path: "/ListeAvisPersonnel", component: <ListeAvisPersonnel /> },
-  { path: "/AjouterAvisPersonnel", component: <AjouterAvisPersonnel /> },
+   //avis enseignant
+   { path: "/ListeAvisEnseignant", component: <ListeAvisEnseignant /> },
+   { path: "/AjouterAvisEnseignant", component: <AjouterAvisEnseignant /> },
+   { path: "/SingleAvisEnseignant", component: <SingleAvisEnseignant /> },
+     // avis personnel
+     { path: "/ListeAvisPersonnel", component: <ListeAvisPersonnel /> },
+     { path: "/AjouterAvisPersonnel", component: <AjouterAvisPersonnel /> },
+     { path: "/SingleAvisPersonnel", component: <SingleAvisPersonnel /> },
 
   { path: "/DemandeEnseignant", component: <DemandeEnseignant /> },
   { path: "/ReclamationEnseignant", component: <ReclamationEnseignant /> },
