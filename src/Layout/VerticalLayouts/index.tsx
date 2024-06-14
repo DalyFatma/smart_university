@@ -12,8 +12,14 @@ import navdata from "../LayoutMenuData";
 import { Link, useNavigate } from "react-router-dom";
 // import ModalAffiliate from "./ModalAffiliate";
 
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "features/authSlice";
+import { RootState } from "app/store";
+
 
 const VerticalLayout = (props: any) => {
+  const user: any = useSelector((state: RootState) => selectCurrentUser(state));
+  console.log("user2",user);
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: "btn btn-success",

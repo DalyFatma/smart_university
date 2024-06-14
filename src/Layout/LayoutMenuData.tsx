@@ -1,6 +1,13 @@
+import { RootState } from "../app/store";
+import { useAppSelector } from "app/hook";
+import { selectCurrentUser } from "features/authSlice";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Navdata = () => {
+  const user: any = useSelector((state: RootState) => selectCurrentUser(state));
+  console.log("user", user);
+
   //state data
   const [isEcommerce, setIsEcommerce] = useState(false);
   const [isOrder, setIsOrder] = useState(false);
@@ -40,6 +47,21 @@ const Navdata = () => {
         // }
       });
     }
+  }
+
+  function linkInRoutes(link: string, routes: string[]): boolean {
+    return routes.includes(link);
+  }
+
+  function filterMenuItems(menuItems: any[], routes: string[]): any[] {
+    return menuItems.filter((item) => {
+      if (item.subItems) {
+        item.subItems = filterMenuItems(item.subItems, routes);
+        // Keep the item if it has subItems left after filtering
+        return item.subItems.length > 0;
+      }
+      return linkInRoutes(item.link, routes);
+    });
   }
 
   useEffect(() => {
@@ -104,11 +126,36 @@ const Navdata = () => {
     isPersonnel,
   ]);
 
+  let routes = [
+    "/dashboard",
+    "/AjouterEtudiant",
+    "/AjouterEnseignant",
+    "/ListeEnseignants",
+    "/ListeEtudiants",
+    "/permissions",
+    "/parametre/categorie-personnels",
+    "/parametre/poste-personnels",
+    "/parametre/grade-personnels",
+    "/parametre/etat-personnels",
+    "/parametre/parametre-personnels",
+    "/parametre/specialite-enseignants",
+    "/parametre/poste-enseignants",
+    "/parametre/grade-enseignants",
+    "/parametre/etat-enseignants",
+   "/parametre/parametre-enseignants",
+   "/parametre/inscription-etudiants",
+   "/parametre/etat-etudiants",
+   "/parametre/parametre-etudiants"
+  
+
+  ];
+
   const menuItems: any = [
     {
       label: "Menu",
       isHeader: true,
     },
+
     //dashboard
     {
       id: "dashboard",
@@ -208,104 +255,6 @@ const Navdata = () => {
         },
       ],
     },
-    // {
-    //     id: "Gestion-des-avis-Enseignants",
-    //     label: "Gestion des Enseignants",
-    //     link: "/GestionEnseignant",
-    //     icon: "bi bi-person-gear",
-
-    // },
-
-    // {
-    //     id: "Demande-enseignants",
-    //     label: "Demande Enseignants",
-    //     link: "/DemandeEnseignant",
-    //     icon: "bi bi-telephone-forward-fill",
-
-    // },
-    // {
-    //     id: "Réclamation-enseignants",
-    //     label: "Réclamation Enseignants",
-    //     link: "/ReclamationEnseignant",
-    //     icon: "bi bi-pencil-square",
-
-    // },
-    // {
-    //     id: "Avis-rattrapage",
-    //     label: "Avis Rattrapage",
-    //     link: "/AvisRattrapage",
-    //     icon: "bi bi-book-half",
-
-    // },
-
-    // {
-    //     id: "gestionPresence",
-    //     label: "Gestion des Présences",
-    //     icon: "bi bi-person-check",
-    //     link: "/#",
-    //     click: function (e: any) {
-    //         e.preventDefault();
-    //         setIsOrder(!isOrder);
-    //         setIscurrentState('Orders');
-    //         updateIconSidebar(e);
-    //     },
-    //     stateVariables: isOrder,
-    //     subItems: [
-    //         {
-    //             id: "Pointages-enseignants",
-    //             label: "Pointage Enseignant",
-    //             link: "/orders-list-view",
-    //             parentId: "gestionPresence",
-    //             icon: "bi bi-fingerprint"
-    //         },
-    //         {
-    //             id: "Absence-enseignant",
-    //             label: "Absence Enseignant",
-    //             link: "/orders-overview",
-    //             parentId: "gestionPresence",
-    //             icon: "bi bi-person-exclamation"
-    //         },
-    //     ],
-    // },
-    // {
-    //     id: "parametre",
-    //     label: "Paramètres Comptes",
-    //     icon: "bi bi-sliders",
-    //     link: "/#",
-    //     click: function (e: any) {
-    //         e.preventDefault();
-    //         setIsParametre(!isParametre);
-    //         setIscurrentState('Parametre');
-    //         updateIconSidebar(e);
-    //     },
-    //     stateVariables: isParametre,
-    //     subItems: [
-    //         {
-    //             id: "Etudiants",
-    //             label: "Etudiants",
-    //             link: "/parametre/parametre-etudiants",
-    //             parentId: "parametre",
-    //             icon: "bi bi-mortarboard-fill"
-    //         },
-    //         {
-    //             id: "Enseignants",
-    //             label: "Enseignants",
-    //             link: "/parametre/parametre-enseignants",
-    //             parentId: "parametre",
-    //             icon: "bi bi-person-fill"
-    //         },
-    //         {
-    //             id: "Personnels",
-    //             label: "Personnels",
-    //             link: "/parametre/parametre-personnels",
-    //             parentId: "parametre",
-    //             icon: "bi bi-person-workspace"
-    //         },
-
-    //     ],
-
-    // },
-
     {
       id: "parametre",
       label: "Paramètres Comptes",
@@ -323,7 +272,7 @@ const Navdata = () => {
           id: "Etudiants",
           label: "Etudiants",
           icon: "bi bi-mortarboard-fill",
-          link: "",
+          link: "/parametre/parametre-etudiants",
           isChildItem: true,
           click: function (e: any) {
             e.preventDefault();
@@ -338,7 +287,7 @@ const Navdata = () => {
               icon: "bi bi-person-fill-exclamation",
             },
             {
-              id: 1,
+              id: 2,
               label: "Inscription",
               link: "/parametre/inscription-etudiants",
               icon: "bi bi-person-plus-fill",
@@ -364,7 +313,7 @@ const Navdata = () => {
               icon: "bi bi-person-fill-exclamation",
             },
             {
-              id: 1,
+              id: 2,
               label: "Grade",
               link: "/parametre/grade-enseignants",
               icon: "bi bi-award-fill",
@@ -376,7 +325,7 @@ const Navdata = () => {
               icon: "bi bi-book",
             },
             {
-              id: 1,
+              id: 2,
               label: "Spécialité",
               link: "/parametre/specialite-enseignants",
               icon: "bi bi-briefcase-fill",
@@ -402,19 +351,19 @@ const Navdata = () => {
               icon: "bi bi-person-fill-exclamation",
             },
             {
-              id: 1,
+              id: 2,
               label: "Grade",
               link: "/parametre/grade-personnels",
               icon: "bi bi-award-fill",
             },
             {
-              id: 1,
+              id: 3,
               label: "Poste",
               link: "/parametre/poste-personnels",
               icon: "bi bi-book",
             },
             {
-              id: 1,
+              id: 4,
               label: "Catégorie",
               link: "/parametre/categorie-personnels",
               icon: "bi bi-grid",
@@ -753,7 +702,6 @@ const Navdata = () => {
         },
       ],
     },
-  
 
     {
       id: "telechargement",
@@ -767,7 +715,17 @@ const Navdata = () => {
       icon: "bi bi-link-45deg",
       link: "/liens-utils",
     },
+
+    {
+      id: "Permission",
+      label: "Permissions",
+      icon: "bi bi-link-45deg",
+      link: "/permissions",
+    },
   ];
-  return <React.Fragment>{menuItems}</React.Fragment>;
+
+  const filteredMenuItems = filterMenuItems(menuItems, routes);
+
+  return <React.Fragment>{filteredMenuItems}</React.Fragment>;
 };
 export default Navdata;

@@ -352,7 +352,7 @@ const AjouterAvisPersonnel = () => {
                               id="add-btn"
                               type="submit"
                             >
-                              Ajouter Avis Etudiant
+                              Ajouter avis étudiant
                             </Button>
                           </div>
                         </Col>

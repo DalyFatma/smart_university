@@ -131,6 +131,7 @@ import AjouterAvisEnseignant from "pages/AvisEnseignant/AjouterAvisEnseignant";
 import SingleAvisPersonnel from "pages/AvisPersonnel/SingleAvisPersonnel";
 import ListeAvisPersonnel from "pages/AvisPersonnel/ListeAvisPersonnel";
 import AjouterAvisPersonnel from "pages/AvisPersonnel/AjouterAvisPersonnel";
+import Permissions from "pages/Permission";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -231,7 +232,9 @@ const authProtectedRoutes = [
   //liste lien utils
 
   { path: "/liens-utils", component: <ListLienUtilst /> },
+//Permission 
 
+{ path: "/permissions", component: <Permissions /> },
   // actualite
   { path: "/ListeActualite", component: <ListeActualite /> },
   { path: "/AjouterActualite", component: <AjouterActualite /> },
