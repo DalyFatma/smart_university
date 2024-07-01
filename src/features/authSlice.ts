@@ -3,54 +3,35 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../app/store";
 interface UserState {
     user: {
-      id: number;
+      _id?: string;
       name: string;
-      username: string;
-      email: string;
-      address: {
-        street: string;
-        suite: string;
-        city: string;
-        zipcode: string;
-        geo: {
-          lat: string;
-          lng: string;
-        };
-      };
-      phone: string;
-      website: string;
-      company: {
-        name: string;
-        catchPhrase: string;
-        bs: string;
-      };
-    } | null;
+    email:string,
+    login:string,
+    role_id:string,
+    departement_id:string,
+    password: string,
+    api_token: string,
+    photo: string,
+    app_name: string,
+    status: string,
+    
+  }
   }
   
 const slice = createSlice({
   name: "auth",
   initialState: { user: {
-    id: 0,
+    _id: "",
     name: "",
-    username: "",
-    email: "",
-    address: {
-      street: "",
-      suite: "",
-      city: "",
-      zipcode: "",
-      geo: {
-        lat: "",
-        lng: "",
-      },
-    },
-    phone: "",
-    website: "",
-    company: {
-      name: "",
-      catchPhrase: "",
-      bs: "",
-    }
+  email:"",
+  login:"",
+  role_id:"",
+  departement_id:"",
+  password: "",
+  api_token: "",
+  photo: "",
+  app_name: "",
+  status: "",
   } } as UserState,
   reducers: {
     setCredentials: (

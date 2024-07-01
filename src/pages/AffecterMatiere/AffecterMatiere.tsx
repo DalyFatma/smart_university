@@ -1,42 +1,129 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Dropdown,
-  Form,
-  Modal,
-  Row,
-} from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import Breadcrumb from "Common/BreadCrumb";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SimpleBar from "simplebar-react";
+import Select, { MultiValue } from "react-select";
+import { Matiere, useFetchMatiereQuery } from "features/matiere/matiere";
+import { useAssignMatiereToClasseMutation, useDeleteAssignedMatiereFromClasseMutation } from "features/classe/classe";
+
+interface MatiereOption {
+  value: string;
+  label: string;
+  type: string;
+  semestre: string;
+  code_matiere: string;
+  volume: string;
+  nbr_elimination: string;
+}
 
 const AffecterMatiere = () => {
-  document.title = "Affecter matiére avec groupe | Smart University";
-  const [matieres, setMatieres] = useState([{ id: 1 }]);
+  document.title = "Affecter matiére aux groupes/classes | Smart University";
+  const [selectedMatieres, setSelectedMatieres] = useState<Matiere[]>([]);
   const navigate = useNavigate();
+  const { data: allMatieres = [], error } = useFetchMatiereQuery();
+  const [assignMatiereToClasse, { isLoading, isError }] = useAssignMatiereToClasseMutation();
+  const [deleteAssignedMatiereFromClasse, { isLoading: isDeletingMatiere, isError: deleteMatiereError }] =
+  useDeleteAssignedMatiereFromClasseMutation();
+ 
+
 
   const location = useLocation();
-  console.log(location);
+  console.log("location",location)
+  const classeId = location.state?._id;
+  console.log("classeId",classeId)
 
-  const handleRemoveItemClick = (idToRemove: any) => {
-    setMatieres((prevMatiere: any) =>
-      prevMatiere.filter((matiere: any) => matiere.id !== idToRemove)
-    );
-  };
+    useEffect(() => {
+      if (location.state?.matieres) {
+        setSelectedMatieres(location.state.matieres);
+      }
+    }, [location.state?.matieres]);
 
-  const handleAddItemClick = () => {
-    setMatieres((prevMatiere) => [
-      ...prevMatiere,
-      { id: prevMatiere.length + 1 },
-    ]);
-  };
+  if (error) {
+    console.error("Error fetching matieres:", error);
+    return <div>Error fetching matieres</div>;
+  }
 
   const prevNavigate = () => {
-    navigate("/gestion-classes/liste-classes");
+    navigate("/departement/gestion-classes/liste-classes");
   };
+  
+  const options: MatiereOption[] = allMatieres.map((matiere) => ({
+    value: matiere._id,
+    label: matiere.matiere,
+    type: matiere.type,
+    semestre: matiere.semestre,
+    code_matiere: matiere.code_matiere,
+    volume: matiere.volume,
+    nbr_elimination: matiere.nbr_elimination,
+  }));
+
+  const customStyles = {
+    multiValue: (styles: any, { data }: any) => ({
+      ...styles,
+      backgroundColor: "#4b93ff",
+    }),
+    multiValueLabel: (styles: any, { data }: any) => ({
+      ...styles,
+      backgroundColor: "#4b93ff",
+      color: "white",
+    }),
+    multiValueRemove: (styles: any, { data }: any) => ({
+      ...styles,
+      color: "white",
+      backgroundColor: "#4b93ff",
+      ":hover": {
+        backgroundColor: "#4b93ff",
+        color: "white",
+      },
+    }),
+  };
+
+  const handleSelectChange = (selectedOptions: MultiValue<MatiereOption>) => {
+    const matieres = selectedOptions.map(option => ({
+      _id: option.value,
+      code_matiere: option.code_matiere,
+      matiere: option.label,
+      type: option.type,
+      semestre: option.semestre,
+      volume: option.volume,
+      nbr_elimination: option.nbr_elimination,
+    }));
+    setSelectedMatieres(matieres);
+  };
+  
+  const handleDeleteClick = async (matiereId: string) => {
+    try {
+      // Perform deletion mutation or action
+      await deleteAssignedMatiereFromClasse({ classeId, matiereId });
+  
+      // Update state to remove the deleted matiere from selectedMatieres
+      setSelectedMatieres((prevMatieres) =>
+        prevMatieres.filter((m) => m._id !== matiereId)
+      );
+    } catch (error) {
+      console.error("Error deleting assigned matiere from classe:", error);
+    }
+  };
+  
+  
+  
+
+  const handleSubmit = async () => {
+    const matiereIds = selectedMatieres.map((matiere) => matiere._id);
+    try {
+      await assignMatiereToClasse({
+        _id: classeId,
+        matiereIds,
+      }).unwrap();
+      navigate("/departement/gestion-classes/liste-classes");
+    } catch (error) {
+      console.error("Error assigning matieres to classe:", error);
+    }
+  };
+
+
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -61,18 +148,6 @@ const AffecterMatiere = () => {
                         <i className="ri-search-line search-icon"></i>
                       </div>
                     </Col>
-                    {/* <Col className="col-lg-auto">
-                      <select
-                        className="form-select"
-                        id="idStatus"
-                        name="choices-single-default"
-                      >
-                        <option defaultValue="All">Status</option>
-                        <option value="All">tous</option>
-                        <option value="Active">Activé</option>
-                        <option value="Inactive">Desactivé</option>
-                      </select>
-                    </Col> */}
 
                     <Col className="col-lg-auto ms-auto">
                       <div className="hstack gap-3">
@@ -93,349 +168,76 @@ const AffecterMatiere = () => {
                 <Card.Body className="p-3">
                   <Row>
                     <Col lg={6} style={{ maxHeight: "calc(100vh - 150px)" }}>
-                      {matieres.map((matiere) => (
-                        <div key={matiere.id}>
-                          <Row>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <label
-                                  htmlFor="studentIdInput"
-                                  className="form-label"
-                                >
-                                  Affecter des matières :
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  id="studentIdInput"
-                                  name="studentIdInput"
-                                  required
-                                />
-                              </div>
-                            </Col>
-                            <Col lg={6}>
-                              <button
-                                type="button"
-                                className="btn btn-danger btn-icon"
-                                onClick={() =>
-                                  handleRemoveItemClick(matiere.id)
-                                }
-                                style={{ marginTop: "27px" }}
-                              >
-                                <i className="ri-delete-bin-5-line"></i>
-                              </button>
-                            </Col>
-                          </Row>
-                        </div>
-                      ))}
-
-                      <Row className="align-items-center">
-                        <Col>
-                          <Link
-                            to="#"
-                            id="add-item"
-                            className="btn btn-soft-secondary fw-medium"
-                            onClick={handleAddItemClick}
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          <Form.Label
+                            htmlFor="choices-multiple-remove-button"
+                            className="text-muted"
                           >
-                            <i className="ri-add-fill me-1 align-bottom"></i>
-                          </Link>
-                        </Col>
-                        <Col style={{ marginRight: "210px" }}>
-                          <Button variant="secondary" className="add-btn">
-                            Ajouter
-                          </Button>
-                        </Col>
-                      </Row>
+                            Selectionner Matiere
+                          </Form.Label>
+
+                          <Select
+                            closeMenuOnSelect={false}
+                            isMulti
+                            options={options}
+                            styles={customStyles}
+                            onChange={handleSelectChange}
+                          />
+                        </div>
+                      </Col>
                     </Col>
                     <Col lg={6}>
                       <div className="sticky-side-div mb-4">
                         <label htmlFor="studentIdInput" className="form-label">
-                          Liste des matières liés avec groupe :{" "}
-                          <span style={{ color: "#8B322C" }}>LISI1-G3</span>
+                          Liste des matières liés avec groupe :
+                          <span style={{ color: "#8B322C" }}>
+                            {location?.state?.nom_classe_fr!}
+                          </span>
                         </label>
 
                         <SimpleBar style={{ maxHeight: "calc(100vh - 150px)" }}>
                           <Row className="gy-4">
                             <Col lg={12}>
-                              <Card style={{ height: "50px" }}>
-                                <Card.Body style={{ padding: "10px" }}>
-                                  <div className="d-flex justify-content-between">
-                                    <h1 className="fs-18 mb-3">
-                                      <span style={{ color: "#9B3922" }}>
-                                        203
-                                      </span>
-                                      - Analyse 1 /
-                                      <span style={{ color: "#2C7865" }}>
-                                        TD
-                                      </span>{" "}
-                                      /{" "}
-                                      <span style={{ color: "#627254" }}>
-                                        S1{" "}
-                                      </span>
-                                    </h1>
-                                    <Button
-                                      type="button"
-                                      className="btn btn-danger btn-icon btn-sm"
-                                     
-                                    >
-                                      <i
-                                        className="ri-delete-bin-5-line"
-                                        
-                                      ></i>
-                                    </Button>
-                                  </div>
-                                </Card.Body>
-                              </Card>
-                            </Col>
-                            <Col lg={12}>
-                              <Card style={{ height: "50px" }}>
-                                <Card.Body style={{ padding: "10px" }}>
-                                  <div className="d-flex justify-content-between">
-                                    <h1 className="fs-18 mb-3">
-                                      <span style={{ color: "#9B3922" }}>
-                                        203
-                                      </span>
-                                      - Analyse 1 /
-                                      <span style={{ color: "#2C7865" }}>
-                                        TD
-                                      </span>{" "}
-                                      /{" "}
-                                      <span style={{ color: "#627254" }}>
-                                        S1{" "}
-                                      </span>
-                                    </h1>
-                                    <Button
-                                      type="button"
-                                      className="btn btn-danger btn-icon btn-sm"
-                                     
-                                    >
-                                      <i
-                                        className="ri-delete-bin-5-line"
-                                        
-                                      ></i>
-                                    </Button>
-                                  </div>
-                                </Card.Body>
-                              </Card>
-                            </Col>
-                            <Col lg={12}>
-                              <Card style={{ height: "50px" }}>
-                                <Card.Body style={{ padding: "10px" }}>
-                                  <div className="d-flex justify-content-between">
-                                    <h1 className="fs-18 mb-3">
-                                      <span style={{ color: "#9B3922" }}>
-                                        203
-                                      </span>
-                                      - Analyse 1 /
-                                      <span style={{ color: "#2C7865" }}>
-                                        TD
-                                      </span>{" "}
-                                      /{" "}
-                                      <span style={{ color: "#627254" }}>
-                                        S1{" "}
-                                      </span>
-                                    </h1>
-                                    <Button
-                                      type="button"
-                                      className="btn btn-danger btn-icon btn-sm"
-                                     
-                                    >
-                                      <i
-                                        className="ri-delete-bin-5-line"
-                                        
-                                      ></i>
-                                    </Button>
-                                  </div>
-                                </Card.Body>
-                              </Card>
-                            </Col>
-                            <Col lg={12}>
-                              <Card style={{ height: "50px" }}>
-                                <Card.Body style={{ padding: "10px" }}>
-                                  <div className="d-flex justify-content-between">
-                                    <h1 className="fs-18 mb-3">
-                                      <span style={{ color: "#9B3922" }}>
-                                        203
-                                      </span>
-                                      - Analyse 1 /
-                                      <span style={{ color: "#2C7865" }}>
-                                        TD
-                                      </span>{" "}
-                                      /{" "}
-                                      <span style={{ color: "#627254" }}>
-                                        S1{" "}
-                                      </span>
-                                    </h1>
-                                    <Button
-                                      type="button"
-                                      className="btn btn-danger btn-icon btn-sm"
-                                     
-                                    >
-                                      <i
-                                        className="ri-delete-bin-5-line"
-                                        
-                                      ></i>
-                                    </Button>
-                                  </div>
-                                </Card.Body>
-                              </Card>
-                            </Col>
-                            <Col lg={12}>
-                              <Card style={{ height: "50px" }}>
-                                <Card.Body style={{ padding: "10px" }}>
-                                  <div className="d-flex justify-content-between">
-                                    <h1 className="fs-18 mb-3">
-                                      <span style={{ color: "#9B3922" }}>
-                                        203
-                                      </span>
-                                      - Analyse 1 /
-                                      <span style={{ color: "#2C7865" }}>
-                                        TD
-                                      </span>{" "}
-                                      /{" "}
-                                      <span style={{ color: "#627254" }}>
-                                        S1{" "}
-                                      </span>
-                                    </h1>
-                                    <Button
-                                      type="button"
-                                      className="btn btn-danger btn-icon btn-sm"
-                                     
-                                    >
-                                      <i
-                                        className="ri-delete-bin-5-line"
-                                        
-                                      ></i>
-                                    </Button>
-                                  </div>
-                                </Card.Body>
-                              </Card>
-                            </Col>
-                            <Col lg={12}>
-                              <Card style={{ height: "50px" }}>
-                                <Card.Body style={{ padding: "10px" }}>
-                                  <div className="d-flex justify-content-between">
-                                    <h1 className="fs-18 mb-3">
-                                      <span style={{ color: "#9B3922" }}>
-                                        203
-                                      </span>
-                                      - Analyse 1 /
-                                      <span style={{ color: "#2C7865" }}>
-                                        TD
-                                      </span>{" "}
-                                      /{" "}
-                                      <span style={{ color: "#627254" }}>
-                                        S1{" "}
-                                      </span>
-                                    </h1>
-                                    <Button
-                                      type="button"
-                                      className="btn btn-danger btn-icon btn-sm"
-                                     
-                                    >
-                                      <i
-                                        className="ri-delete-bin-5-line"
-                                        
-                                      ></i>
-                                    </Button>
-                                  </div>
-                                </Card.Body>
-                              </Card>
-                            </Col> <Col lg={12}>
-                              <Card style={{ height: "50px" }}>
-                                <Card.Body style={{ padding: "10px" }}>
-                                  <div className="d-flex justify-content-between">
-                                    <h1 className="fs-18 mb-3">
-                                      <span style={{ color: "#9B3922" }}>
-                                        203
-                                      </span>
-                                      - Analyse 1 /
-                                      <span style={{ color: "#2C7865" }}>
-                                        TD
-                                      </span>{" "}
-                                      /{" "}
-                                      <span style={{ color: "#627254" }}>
-                                        S1{" "}
-                                      </span>
-                                    </h1>
-                                    <Button
-                                      type="button"
-                                      className="btn btn-danger btn-icon btn-sm"
-                                     
-                                    >
-                                      <i
-                                        className="ri-delete-bin-5-line"
-                                        
-                                      ></i>
-                                    </Button>
-                                  </div>
-                                </Card.Body>
-                              </Card>
-                            </Col>
-                            <Col lg={12}>
-                              <Card style={{ height: "50px" }}>
-                                <Card.Body style={{ padding: "10px" }}>
-                                  <div className="d-flex justify-content-between">
-                                    <h1 className="fs-18 mb-3">
-                                      <span style={{ color: "#9B3922" }}>
-                                        203
-                                      </span>
-                                      - Analyse 1 /
-                                      <span style={{ color: "#2C7865" }}>
-                                        TD
-                                      </span>{" "}
-                                      /{" "}
-                                      <span style={{ color: "#627254" }}>
-                                        S1{" "}
-                                      </span>
-                                    </h1>
-                                    <Button
-                                      type="button"
-                                      className="btn btn-danger btn-icon btn-sm"
-                                     
-                                    >
-                                      <i
-                                        className="ri-delete-bin-5-line"
-                                        
-                                      ></i>
-                                    </Button>
-                                  </div>
-                                </Card.Body>
-                              </Card>
-                            </Col>
-                            <Col lg={12}>
-                              <Card style={{ height: "50px" }}>
-                                <Card.Body style={{ padding: "10px" }}>
-                                  <div className="d-flex justify-content-between">
-                                    <h1 className="fs-18 mb-3">
-                                      <span style={{ color: "#9B3922" }}>
-                                        203
-                                      </span>
-                                      - Analyse 1 /
-                                      <span style={{ color: "#2C7865" }}>
-                                        TD
-                                      </span>{" "}
-                                      /{" "}
-                                      <span style={{ color: "#627254" }}>
-                                        S1{" "}
-                                      </span>
-                                    </h1>
-                                    <Button
-                                      type="button"
-                                      className="btn btn-danger btn-icon btn-sm"
-                                     
-                                    >
-                                      <i
-                                        className="ri-delete-bin-5-line"
-                                        
-                                      ></i>
-                                    </Button>
-                                  </div>
-                                </Card.Body>
-                              </Card>
+                              {selectedMatieres.map((matiere) => (
+                                <Card
+                                  style={{ height: "50px", marginTop: "10px" }}
+                                  key={matiere._id}
+                                >
+                                  <Card.Body style={{ padding: "10px" }}>
+                                    <div className="d-flex justify-content-between">
+                                      <h1 className="fs-18 mb-3">
+                                        <span style={{ color: "#9B3922" }}>
+                                          {matiere.code_matiere}
+                                        </span>
+                                        - {matiere.matiere} /
+                                        <span style={{ color: "#2C7865" }}>
+                                        {matiere.type}
+                                        </span>
+                                        /
+                                        <span style={{ color: "#627254" }}>
+                                        {matiere.semestre}
+                                        </span>
+                                      </h1>
+                                      <Button
+                                        type="button"
+                                        className="btn btn-danger btn-icon btn-sm"
+                                        onClick={() => handleDeleteClick(matiere._id)}
+                                      >
+                                        <i className="ri-delete-bin-5-line"></i>
+                                      </Button>
+                                      
+                                    </div>
+                                  </Card.Body>
+                                </Card>
+                              ))}
                             </Col>
                           </Row>
                         </SimpleBar>
+                        <Button variant="primary" onClick={handleSubmit} disabled={isLoading}>
+                          Submit
+                        </Button>
+                        {isError && <div className="text-danger">Error assigning matieres to classe.</div>}
                       </div>
                     </Col>
                   </Row>

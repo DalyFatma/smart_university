@@ -4,16 +4,16 @@ import {
   Card,
   Col,
   Container,
-  Dropdown,
   Form,
   Modal,
   Row,
 } from "react-bootstrap";
 import Breadcrumb from "Common/BreadCrumb";
-import CountUp from "react-countup";
 import { Link, useNavigate } from "react-router-dom";
 import TableContainer from "Common/TableContainer";
 import { sellerList } from "Common/data";
+import Swal from "sweetalert2";
+import { GradeEnseignant, useDeleteGradeEnseignantMutation, useFetchGradesEnseignantQuery } from "features/gradeEnseignant/gradeEnseignant";
 
 const ListGradeEnseignants = () => {
   document.title = "Liste grades des enseignants | Smart University";
@@ -25,6 +25,51 @@ const ListGradeEnseignants = () => {
   function tog_AddParametreModals() {
     setmodal_AddParametreModals(!modal_AddParametreModals);
   }
+
+  function tog_AddGradeEnseignant() {
+    navigate("/parametre/add-grade-enseignant");
+  }
+  const { data = [] } = useFetchGradesEnseignantQuery();
+  const [deleteGradeEnseignant] = useDeleteGradeEnseignantMutation();
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger",
+    },
+    buttonsStyling: false,
+  });
+  const AlertDelete = async (_id: string) => {
+  
+    swalWithBootstrapButtons
+    .fire({
+      title: "Êtes-vous sûr?",
+      text: "Vous ne pourrez pas revenir en arrière!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Oui, supprimez-le!",
+      cancelButtonText: "Non, annuler!",
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        deleteGradeEnseignant(_id);
+        swalWithBootstrapButtons.fire(
+          "Supprimé!",
+          "Grade enseignant a été supprimé.",
+          "success"
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        swalWithBootstrapButtons.fire(
+          "Annulé",
+          "Grade enseignant est en sécurité :)",
+          "error"
+        );
+      }
+    });
+  }
+
+
   const columns = useMemo(
     () => [
       {
@@ -56,21 +101,21 @@ const ListGradeEnseignants = () => {
       },
 
       {
-        Header: "Value",
-        accessor: "sellerName",
+        Header: "Valeur",
+        accessor: "value_grade_enseignant",
         disableFilters: true,
         filterable: true,
       },
 
       {
         Header: "Grade Enseignant",
-        accessor: "balance",
+        accessor: "grade_fr",
         disableFilters: true,
         filterable: true,
       },
       {
-        Header: "الرتبة",
-        accessor: "email",
+        Header: "رتبة الأستاذ",
+        accessor: "grade_ar",
         disableFilters: true,
         filterable: true,
       },
@@ -78,33 +123,13 @@ const ListGradeEnseignants = () => {
         Header: "Action",
         disableFilters: true,
         filterable: true,
-        accessor: (cellProps: any) => {
+        accessor: (gradeEnseignant: GradeEnseignant) => {
           return (
             <ul className="hstack gap-2 list-unstyled mb-0">
               <li>
                 <Link
-                  to="#"
-                  className="badge bg-info-subtle text-info view-item-btn"
-                >
-                  <i
-                    className="ph ph-eye"
-                    style={{
-                      transition: "transform 0.3s ease-in-out",
-                      cursor: "pointer",
-                      fontSize: "1.5em",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.4)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                  ></i>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="#"
+                  to="/parametre/edit-grade-enseignants"
+                  state={gradeEnseignant}
                   className="badge bg-primary-subtle text-primary edit-item-btn"
                 >
                   <i
@@ -141,6 +166,7 @@ const ListGradeEnseignants = () => {
                     onMouseLeave={(e) =>
                       (e.currentTarget.style.transform = "scale(1)")
                     }
+                    onClick={() => AlertDelete(gradeEnseignant?._id!)}
                   ></i>
                 </Link>
               </li>
@@ -194,9 +220,9 @@ const ListGradeEnseignants = () => {
                         <Button
                           variant="primary"
                           className="add-btn"
-                          onClick={() => tog_AddParametreModals()}
+                          onClick={() => tog_AddGradeEnseignant()}
                         >
-                          Ajouter Grade
+                          Ajouter grade enseignant
                         </Button>
                        
                       </div>
@@ -205,11 +231,11 @@ const ListGradeEnseignants = () => {
                 </Card.Body>
               </Card>
 
-              <Modal
+              {/* <Modal
                 className="fade modal-fullscreen"
                 show={modal_AddParametreModals}
                 onHide={() => {
-                  tog_AddParametreModals();
+                  tog_AddGradeEnseignant();
                 }}
                 centered
               >
@@ -281,7 +307,7 @@ const ListGradeEnseignants = () => {
                     </div>
                   </div>
                 </Form>
-              </Modal>
+              </Modal> */}
 
               <Card>
                 <Card.Body className="p-0">
@@ -292,7 +318,7 @@ const ListGradeEnseignants = () => {
                   >
                     <TableContainer
                       columns={columns || []}
-                      data={sellerList || []}
+                      data={data || []}
                       // isGlobalFilter={false}
                       iscustomPageSize={false}
                       isBordered={false}

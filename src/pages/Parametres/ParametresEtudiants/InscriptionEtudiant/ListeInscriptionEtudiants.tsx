@@ -4,15 +4,13 @@ import {
   Card,
   Col,
   Container,
-  Dropdown,
-  Form,
-  Modal,
   Row,
 } from "react-bootstrap";
 import Breadcrumb from "Common/BreadCrumb";
 import { Link, useNavigate } from "react-router-dom";
 import TableContainer from "Common/TableContainer";
-import { sellerList } from "Common/data";
+import Swal from "sweetalert2";
+import { TypeInscriptionEtudiant,  useDeleteTypeInscriptionEtudiantMutation, useFetchTypeInscriptionsEtudiantQuery } from "features/typeInscriptionEtudiant/typeInscriptionEtudiant";
 
 
 const ListeInscriptionEtudiants = () => {
@@ -26,6 +24,52 @@ const ListeInscriptionEtudiants = () => {
   function tog_AddParametreModals() {
     setmodal_AddParametreModals(!modal_AddParametreModals);
   }
+
+  function tog_AddTypeInscriptionEtudiant() {
+    navigate("/parametre/add-inscription-etudiants");
+  }
+  const { data = [] } = useFetchTypeInscriptionsEtudiantQuery();
+  const [deleteTypeInscriptionEtudiant] = useDeleteTypeInscriptionEtudiantMutation();
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger",
+    },
+    buttonsStyling: false,
+  });
+  const AlertDelete = async (_id: string) => {
+  
+    swalWithBootstrapButtons
+    .fire({
+      title: "Êtes-vous sûr?",
+      text: "Vous ne pourrez pas revenir en arrière!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Oui, supprimez-le!",
+      cancelButtonText: "Non, annuler!",
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        deleteTypeInscriptionEtudiant(_id);
+        swalWithBootstrapButtons.fire(
+          "Supprimé!",
+          "Type inscription étudiant a été supprimé.",
+          "success"
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        swalWithBootstrapButtons.fire(
+          "Annulé",
+          "Type inscription étudiant est en sécurité :)",
+          "error"
+        );
+      }
+    });
+  }
+
+
+
   const columns = useMemo(
     () => [
         {
@@ -38,20 +82,20 @@ const ListeInscriptionEtudiants = () => {
 
         {
             Header: "Value",
-            accessor: "sellerName",
+            accessor: "value_type_inscription",
             disableFilters: true,
             filterable: true,
         },
        
         {
             Header: "Inscription Etudiant",
-            accessor: "balance",
+            accessor: "type_fr",
             disableFilters: true,
             filterable: true,
         },
         {
             Header: "تسجيل الطالب",
-            accessor: "email",
+            accessor: "type_ar",
             disableFilters: true,
             filterable: true,
         },
@@ -60,34 +104,13 @@ const ListeInscriptionEtudiants = () => {
             Header: "Action",
             disableFilters: true,
             filterable: true,
-            accessor: (cellProps: any) => {
+            accessor: (typeInscriptionEtudiant: TypeInscriptionEtudiant) => {
                 return (
                     <ul className="hstack gap-2 list-unstyled mb-0">
                       <li>
                         <Link
-                          to="#"
-                          className="badge bg-info-subtle text-info view-item-btn"
-               
-                        >
-                          <i
-                            className="ph ph-eye"
-                            style={{
-                              transition: "transform 0.3s ease-in-out",
-                              cursor: "pointer",
-                              fontSize: "1.5em",
-                            }}
-                            onMouseEnter={(e) =>
-                              (e.currentTarget.style.transform = "scale(1.4)")
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.style.transform = "scale(1)")
-                            }
-                          ></i>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="#"
+                          to="/parametre/edit-type-inscription-etudiant"
+                          state={typeInscriptionEtudiant}
                           className="badge bg-primary-subtle text-primary edit-item-btn"
                     
                         >
@@ -125,6 +148,7 @@ const ListeInscriptionEtudiants = () => {
                             onMouseLeave={(e) =>
                               (e.currentTarget.style.transform = "scale(1)")
                             }
+                            onClick={() => AlertDelete(typeInscriptionEtudiant?._id!)}
                             
                           ></i>
                         </Link>
@@ -140,7 +164,7 @@ const ListeInscriptionEtudiants = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumb title="Paramètres des étudiants" pageTitle="Liste inscriptions des étudiants" />
+          <Breadcrumb title="Paramètres des étudiants" pageTitle="Liste types inscriptions des étudiants" />
          
           <Row id="sellersList">
             <Col lg={12}>
@@ -175,9 +199,9 @@ const ListeInscriptionEtudiants = () => {
                         <Button
                           variant="primary"
                           className="add-btn"
-                          onClick={() => tog_AddParametreModals()}
+                          onClick={() => tog_AddTypeInscriptionEtudiant()}
                         >
-                          Ajouter Inscription
+                          Ajouter type inscription étudiant
                         </Button>
                       
                       </div>
@@ -186,7 +210,7 @@ const ListeInscriptionEtudiants = () => {
                 </Card.Body>
               </Card>
 
-              <Modal
+              {/* <Modal
                 className="fade modal-fullscreen"
                 show={modal_AddParametreModals}
                 onHide={() => {
@@ -264,7 +288,7 @@ const ListeInscriptionEtudiants = () => {
                     </div>
                   </div>
                 </Form>
-              </Modal>
+              </Modal> */}
 
               <Card>
                 <Card.Body className="p-0">
@@ -275,7 +299,7 @@ const ListeInscriptionEtudiants = () => {
                   >
                      <TableContainer
                 columns={(columns || [])}
-                data={(sellerList || [])}
+                data={(data || [])}
                 // isGlobalFilter={false}
                 iscustomPageSize={false}
                 isBordered={false}

@@ -145,7 +145,17 @@ const Navdata = () => {
    "/parametre/parametre-enseignants",
    "/parametre/inscription-etudiants",
    "/parametre/etat-etudiants",
-   "/parametre/parametre-etudiants"
+   "/parametre/parametre-etudiants",
+   "/departement/gestion-matieres/liste-matieres",
+   "/departement/gestion-matieres",
+   '/departement',
+   "/departement/gestion-classes/add-section",
+   "/departement/gestion-classes/add-niveau",
+   "/departement/gestion-classes/liste-classes",
+   "/departement/gestion-classes",
+   "/departement/gestion-salles/liste-salles",
+   "/departement/gestion-salles",
+   ""
   
 
   ];
@@ -368,6 +378,12 @@ const Navdata = () => {
               link: "/parametre/categorie-personnels",
               icon: "bi bi-grid",
             },
+            {
+              id: 4,
+              label: "Service",
+              link: "/parametre/service-personnels",
+              icon: "bi bi-gear",
+            },
           ],
         },
       ],
@@ -376,7 +392,7 @@ const Navdata = () => {
       id: "departement",
       label: "Gestion Département",
       icon: "bi bi-house-gear-fill",
-      link: "/#",
+      link: "/departement",
       click: function (e: any) {
         e.preventDefault();
         setIsDeaprtement(!isDeaprtement);
@@ -389,7 +405,7 @@ const Navdata = () => {
           id: "matieres",
           label: "Matières",
           icon: "bi bi-journals",
-          link: "",
+          link: "/departement/gestion-matieres",
           isChildItem: true,
           click: function (e: any) {
             e.preventDefault();
@@ -400,7 +416,7 @@ const Navdata = () => {
             {
               id: 1,
               label: "Liste Des Matières",
-              link: "/gestion-matieres/liste-matieres",
+              link: "/departement/gestion-matieres/liste-matieres",
               icon: "bi bi-journal-text",
             },
           ],
@@ -409,7 +425,7 @@ const Navdata = () => {
           id: "salles",
           label: "Gestions Des Salles",
           icon: "bi bi-door-closed-fill",
-          link: "",
+          link: "/departement/gestion-salles",
           isChildItem: true,
           click: function (e: any) {
             e.preventDefault();
@@ -420,7 +436,7 @@ const Navdata = () => {
             {
               id: 1,
               label: "Liste Des Salles",
-              link: "/gestion-salles/liste-salles",
+              link: "/departement/gestion-salles/liste-salles",
               icon: "bi bi-person-fill-exclamation",
             },
             // { id: 1, label: "Ajouter Une Salle", link: "/gestion-salles/Ajout-salle",  icon: "bi bi-person-plus-fill"},
@@ -430,7 +446,7 @@ const Navdata = () => {
           id: "classes",
           label: "Classes",
           icon: "bi bi-people-fill",
-          link: "",
+          link: "/departement/gestion-classes",
           isChildItem: true,
           click: function (e: any) {
             e.preventDefault();
@@ -441,20 +457,20 @@ const Navdata = () => {
             {
               id: 1,
               label: "Liste des classes",
-              link: "/gestion-classes/liste-classes",
+              link: "/departement/gestion-classes/liste-classes",
               icon: "bi bi-people-fill",
             },
             {
               id: 1,
-              label: "Ajouter un niveau",
-              link: "/gestion-classes/Ajout-niveau",
-              icon: "bi bi-plus-lg",
+              label: "Listes des niveaux",
+              link: "/departement/gestion-classes/liste-niveau",
+              icon: "bi bi-sliders2-vertical",
             },
             {
               id: 1,
-              label: "Ajouter une séction",
-              link: "/gestion-classes/Ajout-section",
-              icon: "bi bi-plus-lg",
+              label: "listes des séctions",
+              link: "/departement/gestion-classes/liste-section",
+              icon: "bi bi-diagram-3-fill",
             },
           ],
         },

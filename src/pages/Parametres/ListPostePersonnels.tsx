@@ -4,15 +4,13 @@ import {
   Card,
   Col,
   Container,
-  Dropdown,
-  Form,
-  Modal,
   Row,
 } from "react-bootstrap";
 import Breadcrumb from "Common/BreadCrumb";
 import { Link, useNavigate } from "react-router-dom";
 import TableContainer from "Common/TableContainer";
-import { sellerList } from "Common/data";
+import Swal from "sweetalert2";
+import { PostePersonnel, useDeletePostePersonnelMutation, useFetchPostesPersonnelQuery } from "features/postePersonnel/postePersonnel";
 
 
 
@@ -27,6 +25,49 @@ const ListePostPersonnels = () => {
   function tog_AddParametreModals() {
     setmodal_AddParametreModals(!modal_AddParametreModals);
   }
+
+  function tog_AddPostePersonnelModals() {
+    navigate("/parametre/add-poste-personnels");
+  }
+  const { data = [] } = useFetchPostesPersonnelQuery();
+  const [deletePostePersonnel] = useDeletePostePersonnelMutation();
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger",
+    },
+    buttonsStyling: false,
+  });
+  const AlertDelete = async (_id: string) => {
+  
+    swalWithBootstrapButtons
+    .fire({
+      title: "Êtes-vous sûr?",
+      text: "Vous ne pourrez pas revenir en arrière!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Oui, supprimez-le!",
+      cancelButtonText: "Non, annuler!",
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        deletePostePersonnel(_id);
+        swalWithBootstrapButtons.fire(
+          "Supprimé!",
+          "Poste personnel a été supprimé.",
+          "success"
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        swalWithBootstrapButtons.fire(
+          "Annulé",
+          "Poste personnel est en sécurité :)",
+          "error"
+        );
+      }
+    });
+  }
   const columns = useMemo(
     () => [
         {
@@ -36,16 +77,22 @@ const ListePostPersonnels = () => {
             },
             id: '#',
         },
+        {
+          Header: "Valeur",
+          accessor: "value",
+          disableFilters: true,
+          filterable: true,
+      },
         
         {
             Header: "Poste Personnel",
-            accessor: "balance",
+            accessor: "poste_fr",
             disableFilters: true,
             filterable: true,
         },
         {
             Header: "الخطة الوظيفية",
-            accessor: "email",
+            accessor: "poste_ar",
             disableFilters: true,
             filterable: true,
         },
@@ -54,34 +101,14 @@ const ListePostPersonnels = () => {
             Header: "Action",
             disableFilters: true,
             filterable: true,
-            accessor: (cellProps: any) => {
+            accessor: (postePersonnel: PostePersonnel) => {
                 return (
                     <ul className="hstack gap-2 list-unstyled mb-0">
+                   
                       <li>
                         <Link
-                          to="#"
-                          className="badge bg-info-subtle text-info view-item-btn"
-               
-                        >
-                          <i
-                            className="ph ph-eye"
-                            style={{
-                              transition: "transform 0.3s ease-in-out",
-                              cursor: "pointer",
-                              fontSize: "1.5em",
-                            }}
-                            onMouseEnter={(e) =>
-                              (e.currentTarget.style.transform = "scale(1.4)")
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.style.transform = "scale(1)")
-                            }
-                          ></i>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="#"
+                          to="/parametre/edit-poste-personnel"
+                          state={postePersonnel}
                           className="badge bg-primary-subtle text-primary edit-item-btn"
                     
                         >
@@ -119,6 +146,7 @@ const ListePostPersonnels = () => {
                             onMouseLeave={(e) =>
                               (e.currentTarget.style.transform = "scale(1)")
                             }
+                            onClick={() => AlertDelete(postePersonnel?._id!)}
                             
                           ></i>
                         </Link>
@@ -170,9 +198,9 @@ const ListePostPersonnels = () => {
                         <Button
                           variant="primary"
                           className="add-btn"
-                          onClick={() => tog_AddParametreModals()}
+                          onClick={() => tog_AddPostePersonnelModals()}
                         >
-                          Ajouter Poste
+                          Ajouter poste personnel
                         </Button>
                       
                       </div>
@@ -181,7 +209,7 @@ const ListePostPersonnels = () => {
                 </Card.Body>
               </Card>
 
-              <Modal
+              {/* <Modal
                 className="fade modal-fullscreen"
                 show={modal_AddParametreModals}
                 onHide={() => {
@@ -257,7 +285,7 @@ const ListePostPersonnels = () => {
                     </div>
                   </div>
                 </Form>
-              </Modal>
+              </Modal> */}
 
               <Card>
                 <Card.Body className="p-0">
@@ -268,7 +296,7 @@ const ListePostPersonnels = () => {
                   >
                     <TableContainer
                 columns={(columns || [])}
-                data={(sellerList || [])}
+                data={(data || [])}
                 // isGlobalFilter={false}
                 iscustomPageSize={false}
                 isBordered={false}

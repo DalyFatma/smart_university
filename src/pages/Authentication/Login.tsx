@@ -14,7 +14,7 @@ import {
 import logoDark from "assets/images/logo-dark.png";
 import logoLight from "assets/images/logo-light.png";
 import img1 from "assets/images/auth/img-1.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -29,6 +29,9 @@ import withRouter from "Common/withRouter";
 import axios from "axios";
 import { useAppDispatch } from "app/hook";
 import { setCredentials } from "features/authSlice";
+import Swal from "sweetalert2";
+import Cookies from 'js-cookie';
+import { LoginRequest, useLoginMutation } from "features/accountSlice";
 
 //Social Media Imports
 // import { GoogleLogin } from "react-google-login";
@@ -38,131 +41,54 @@ import { setCredentials } from "features/authSlice";
 // import { facebook, google } from "../../config";
 
 const Login = (props: any) => {
-  document.title = "Login | Toner eCommerce + Admin React Template";
+  document.title = "Login | Smart University";
 
-  const dispatch = useDispatch<any>();
-  const selectUser = (state: any) => state?.Account?.user!;
-  const selectError = (state: any) => state?.Login?.error!;
+  const [login, { isLoading }] = useLoginMutation();
 
-  const selectUserData = createSelector(
-    selectUser,
-    selectError,
-    (user, error) => ({
-      user,
-      error,
-    })
-  );
-  const { user, error } = useSelector(selectUserData);
-
-  const [userLogin, setUserLogin] = useState<any>([]);
-  const [passwordShow, setPasswordShow] = useState<any>(false);
-  const [loader, setLoader] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (user && user) {
-      setUserLogin({
-        email: user.email,
-        password: user.password,
-      });
-    }
-  }, [user]);
-
-  const validation: any = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
-    enableReinitialize: true,
-
-    initialValues: {
-      email: userLogin.email || "admin@themesbrand.com" || "",
-      password: userLogin.password || "123456" || "",
-    },
-    validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
-      password: Yup.string().required("Please Enter Your Password"),
-    }),
-    onSubmit: (values) => {
-    //  dispatch(loginUser(values, props.router.navigate));
-      setLoader(true)
-      console.log("hello");
-    //   axios.get(`https://jsonplaceholder.typicode.com/users/1`).then((res) => {
-    //     console.log(res)
-    //     let user = {
-    //         "id": 1,
-    //         "name": "Leanne Graham",
-    //         "username": "Bret",
-    //         "email": "Sincere@april.biz",
-    //         "address": {
-    //             "street": "Kulas Light",
-    //             "suite": "Apt. 556",
-    //             "city": "Gwenborough",
-    //             "zipcode": "92998-3874",
-    //             "geo": {
-    //             "lat": "-37.3159",
-    //             "lng": "81.1496"
-    //             }
-    //         },
-    //         "phone": "1-770-736-8031 x56442",
-    //         "website": "hildegard.org",
-    //         "company": {
-    //             "name": "Romaguera-Crona",
-    //             "catchPhrase": "Multi-layered client-server neural-net",
-    //             "bs": "harness real-time e-markets"
-    //         }
-    //     }
-    //     dispatch(setCredentials({user}));
-    //   });
-      let user = {
-        "id": 1,
-        "name": "Leanne Graham",
-        "username": "Bret",
-        "email": "Sincere@april.biz",
-        "address": {
-            "street": "Kulas Light",
-            "suite": "Apt. 556",
-            "city": "Gwenborough",
-            "zipcode": "92998-3874",
-            "geo": {
-            "lat": "-37.3159",
-            "lng": "81.1496"
-            }
-        },
-        "phone": "1-770-736-8031 x56442",
-        "website": "hildegard.org",
-        "company": {
-            "name": "Romaguera-Crona",
-            "catchPhrase": "Multi-layered client-server neural-net",
-            "bs": "harness real-time e-markets"
-        }
-    }
-    dispatch(setCredentials({user}));
-    dispatch(loginUser(values, props.router.navigate));
-    },
+  const [formState, setFormState] = React.useState<LoginRequest>({
+    login: "",
+    password: "",
   });
+  useEffect(()=>{
+    console.log("hey token");
+    if(localStorage.getItem('auth')) {
+        console.log("hey token2");
+        navigate("/map-tracking")
+    }
+  },[localStorage.getItem('auth')]);
 
-  const signIn = (type: any) => {
-    dispatch(socialLogin(type, props.router.navigate));
+
+   const notify = () => {
+    Swal.fire({
+      icon: "success",
+      title: `Welcome`,
+      showConfirmButton: false,
+      timer: 2200,
+    });
+    navigate("/");
   };
 
-  //handleGoogleLoginResponse
-  // const googleResponse = (response: any) => {
-  //     signIn(response, "google");
-  // };
-
-  // //handleFacebookLoginResponse
-  // const facebookResponse = (response: any) => {
-  //     signIn(response, "facebook");
-  // };
-
-  //for facebook and google authentication
-  const socialResponse = (type: any) => {
-    signIn(type);
+  const msgError: string =
+    "Wrong Credentials !";
+  const Errornotify = (msg: string) => {
+    Swal.fire({
+      icon: "error",
+      title: "Error!",
+      text: `${msg}`,
+      showConfirmButton: false,
+      timer: 2500,
+    });
+    navigate("/login");
   };
+  const dispatch = useDispatch<any>();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(resetLoginFlag());
-    }, 3000);
-    setLoader(false);
-  }, [dispatch, error]);
+  const handleChange = ({
+    target: { name, value },
+  }: React.ChangeEvent<HTMLInputElement>) =>
+    setFormState((prev) => ({ ...prev, [name]: value }));
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
 
   return (
     <React.Fragment>
@@ -173,50 +99,20 @@ const Login = (props: any) => {
               <Col className="col-2">
                 <Link className="navbar-brand mb-2 mb-sm-0" to="/">
                   <img
-                    src={logoDark}
+                    src=""
                     className="card-logo card-logo-dark"
                     alt="logo dark"
-                    height="22"
+                    height="38"
                   />
                   <img
-                    src={logoLight}
+                    src=""
                     className="card-logo card-logo-light"
                     alt="logo light"
-                    height="22"
+                    height="38"
                   />
                 </Link>
               </Col>
-              <Col className="col-auto">
-                <ul className="list-unstyled hstack gap-2 mb-0">
-                  <li className="me-md-3">
-                    <Link to="#" className="text-body fw-medium fs-15">
-                      Become a Selling
-                    </Link>
-                  </li>
-                  <li className="d-none d-md-block">
-                    <Link
-                      to="#"
-                      className="btn btn-soft-secondary"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i className="bi bi-google-play align-middle me-1"></i>{" "}
-                      Download App
-                    </Link>
-                  </li>
-                  <li className="d-none d-md-block">
-                    <Link
-                      to="#"
-                      className="btn btn-soft-primary"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i className="bi bi-apple align-middle me-1"></i> Download
-                      App
-                    </Link>
-                  </li>
-                </ul>
-              </Col>
+            
             </Row>
           </Container>
         </div>
@@ -229,121 +125,76 @@ const Login = (props: any) => {
                     <Card.Header className="bg-primary border-0">
                       <Row>
                         <Col lg={4} className="col-3">
-                          <img src={img1} alt="" className="img-fluid" />
+                          <img src="" alt="" className="img-fluid" />
                         </Col>
-                        <Col lg={8} className="col-9">
+                        {/* <Col lg={8} className="col-9">
                           <h1 className="text-white lh-base fw-lighter">
                             Join Our Toner Store
                           </h1>
-                        </Col>
+                        </Col> */}
                       </Row>
                     </Card.Header>
                     <Card.Body>
                       <p className="text-muted fs-15">
-                        Sign in to continue to Toner.
+                        Sign in to continue to School Dashboard.
                       </p>
                       <div className="p-2">
-                        {error && error ? (
-                          <Alert variant="danger">
-                            {" "}
-                            Username and password are invalid.{" "}
-                          </Alert>
-                        ) : null}
+                        <div className="mb-3">
+                          <Form.Label htmlFor="username">Login</Form.Label>
+                          <Form.Control
+                            type="email"
+                            className="form-control"
+                            //   id="username"
+                            placeholder="Enter username"
+                            onChange={handleChange}
+                            name="login"
+                          />
+                        </div>
 
-                        <Form
-                          action="#"
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            validation.handleSubmit();
-                            return false;
-                          }}
-                        >
-                          <div className="mb-3">
-                            <Form.Label htmlFor="username">Username</Form.Label>
+                        <div className="mb-3">
+                          <div className="float-end">
+                            <Link to="/forgot-password" className="text-muted">
+                              Forgot password?
+                            </Link>
+                          </div>
+                          <Form.Label htmlFor="password-input">
+                            Password
+                          </Form.Label>
+                          <div className="position-relative auth-pass-inputgroup mb-3">
                             <Form.Control
-                              name="email"
-                              type="email"
-                              className="form-control"
-                              id="username"
-                              placeholder="Enter username"
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.email || ""}
-                              isInvalid={
-                                validation.touched.email &&
-                                validation.errors.email
-                                  ? true
-                                  : false
-                              }
+                              className="form-control pe-5 password-input"
+                              placeholder="Enter password"
+                              id="password-input"
+                              name="password"
+                              onChange={handleChange}
+                              type={show ? "text" : "password"}
                             />
-                            {validation.touched.email &&
-                            validation.errors.email ? (
-                              <Form.Control.Feedback type="invalid">
-                                {validation.errors.email}
-                              </Form.Control.Feedback>
-                            ) : null}
-                          </div>
 
-                          <div className="mb-3">
-                            <div className="float-end">
-                              <Link
-                                to="/forgot-password"
-                                className="text-muted"
-                              >
-                                Forgot password?
-                              </Link>
-                            </div>
-                            <Form.Label htmlFor="password-input">
-                              Password
-                            </Form.Label>
-                            <div className="position-relative auth-pass-inputgroup mb-3">
-                              <Form.Control
-                                className="form-control pe-5 password-input"
-                                placeholder="Enter password"
-                                id="password-input"
-                                name="password"
-                                value={validation.values.password || ""}
-                                type={passwordShow ? "text" : "password"}
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                isInvalid={
-                                  validation.touched.password &&
-                                  validation.errors.password
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {validation.touched.password &&
-                              validation.errors.password ? (
-                                <Form.Control.Feedback type="invalid">
-                                  {validation.errors.password}
-                                </Form.Control.Feedback>
-                              ) : null}
-                              <Button
-                                variant="link"
-                                className="position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
-                                type="button"
-                                id="password-addon"
-                                onClick={() => setPasswordShow(!passwordShow)}
-                              >
-                                <i className="ri-eye-fill align-middle"></i>
-                              </Button>
-                            </div>
-                          </div>
-
-                          <div className="form-check">
-                            <Form.Check
-                              type="checkbox"
-                              value=""
-                              id="auth-remember-check"
-                            />
-                            <Form.Label htmlFor="auth-remember-check">
-                              Remember me
-                            </Form.Label>
-                          </div>
-
-                          <div className="mt-4">
                             <Button
+                              variant="link"
+                              className="position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                              type="button"
+                              id="password-addon"
+                              onClick={handleClick}
+                            >
+                              <i className="ri-eye-fill align-middle"></i>
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="form-check">
+                          <Form.Check
+                            type="checkbox"
+                            value=""
+                            id="auth-remember-check"
+                          />
+                          <Form.Label htmlFor="auth-remember-check">
+                            Remember me
+                          </Form.Label>
+                        </div>
+
+                        <div className="mt-4">
+                          {/* <Button
                               variant="primary"
                               className="w-100"
                               type="submit"
@@ -359,55 +210,45 @@ const Login = (props: any) => {
                                   )
                                 : ""}
                               Sign In
-                            </Button>
-                          </div>
+                            </Button> */}
+                        </div>
 
-                          <div className="mt-4 pt-2 text-center">
-                            <div className="signin-other-title">
-                              <h5 className="fs-13 mb-4 title">Sign In with</h5>
-                            </div>
-                            <div className="pt-2 hstack gap-2 justify-content-center">
-                              <button
-                                type="button"
-                                className="btn btn-soft-primary btn-icon"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  socialResponse("facebook");
-                                }}
-                              >
-                                <i className="ri-facebook-fill fs-lg"></i>
-                              </button>
-                              <button
-                                type="button"
-                                className="btn btn-soft-danger btn-icon"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  socialResponse("google");
-                                }}
-                              >
-                                <i className="ri-google-fill fs-lg"></i>
-                              </button>
-                              <Button variant="soft-dark" className="btn-icon">
-                                <i className="ri-github-fill fs-16"></i>
-                              </Button>
-                              <Button variant="soft-info" className="btn-icon">
-                                <i className="ri-twitter-fill fs-16"></i>
-                              </Button>
-                            </div>
-                          </div>
-                        </Form>
+                        <div>
+                          <Button
+                            variant="primary"
+                            className="w-100"
+                            type="submit"
+                            onClick={async () => {
+                              try {
+                                const user: any = await login(formState).unwrap();
+                                console.log(user);
+                                if (user) {
 
-                        <div className="text-center mt-5">
-                          <p className="mb-0">
-                            Don't have an account ?{" "}
-                            <Link
-                              to="/register"
-                              className="fw-semibold text-secondary text-decoration-underline"
-                            >
-                              {" "}
-                              SignUp
-                            </Link>{" "}
-                          </p>
+                                  if(user.user.status === 'Active'){
+                                    dispatch(setCredentials(user));
+                                    // localStorage.setItem(
+                                    //   "auth",
+                                    //   user?.school.api_token
+                                    // );
+                                    Cookies.set('astk', user.user.api_token, { expires: 1/4 });
+                                    notify();
+                                  }
+
+                                  if(user.user.status !== 'Active'){
+                                    Errornotify('Your Account is Inactive!');
+                                  }
+                                  
+                                } else {
+                                Errornotify(msgError);
+                                }
+                              } catch (err: any) {
+                                //Errornotify(err);
+                                console.log(err);
+                              }
+                            }}
+                          >
+                            Sign In
+                          </Button>
                         </div>
                       </div>
                     </Card.Body>
@@ -423,9 +264,9 @@ const Login = (props: any) => {
                 <Col lg={12}>
                   <div className="text-center">
                     <p className="mb-0 text-muted">
-                      ©{new Date().getFullYear()} Toner. Crafted with{" "}
-                      <i className="mdi mdi-heart text-danger"></i> by
-                      Themesbrand
+                      ©{new Date().getFullYear()} Bouden Coach Travel. Crafted
+                      with <i className="mdi mdi-heart text-danger"></i> by Team
+                      3S
                     </p>
                   </div>
                 </Col>

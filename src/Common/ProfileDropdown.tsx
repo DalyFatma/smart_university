@@ -4,9 +4,11 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 //import images
 import avatar1 from "assets/images/users/avatar-1.jpg";
+import { RootState } from 'app/store';
+import { selectCurrentUser } from 'features/authSlice';
 
 const ProfileDropdown = () => {
-
+    const user = useSelector((state: RootState) => selectCurrentUser(state));
     const [userName, setUserName] = useState<any>("Robert");
 
     const profiledropdownData = createSelector(
@@ -36,7 +38,7 @@ const ProfileDropdown = () => {
                     </span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="dropdown-menu-end">
-                    <h6 className="dropdown-header">Welcome {userName}!</h6>
+                    <h6 className="dropdown-header">Bienvenue {user.name}!</h6>
                     <Dropdown.Item href="/user-profile"><i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span className="align-middle">Profile</span></Dropdown.Item>
                     <Dropdown.Item href="/#!"><i className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span className="align-middle">Messages</span></Dropdown.Item>
                     <Dropdown.Item href="/#!"><i className="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span className="align-middle">Taskboard</span></Dropdown.Item>

@@ -132,6 +132,40 @@ import SingleAvisPersonnel from "pages/AvisPersonnel/SingleAvisPersonnel";
 import ListeAvisPersonnel from "pages/AvisPersonnel/ListeAvisPersonnel";
 import AjouterAvisPersonnel from "pages/AvisPersonnel/AjouterAvisPersonnel";
 import Permissions from "pages/Permission";
+import AddEtatPersonnel from "pages/Parametres/AddEtatPersonnel";
+import EditEtatPersonnel from "pages/Parametres/EditEtatPersonnel";
+import AddPostePersonnel from "pages/Parametres/AddPostePersonnel";
+import EditPostePersonnel from "pages/Parametres/EditPostePersonnels";
+import AddCategoriePersonnel from "pages/Parametres/AddCategoriePersonnels";
+import EditCategoriePersonnel from "pages/Parametres/EditCategoriePersonnel";
+import AddGradePersonnel from "pages/Parametres/AddGradePersonnel";
+import EditGradePersonnel from "pages/Parametres/EditGradePersonnel";
+import AddEtatEnseignant from "pages/Parametres/AddEtatEnseignants";
+import EditEtatEnseignant from "pages/Parametres/EditEtatEnseignant";
+import AddGradeEnseignant from "pages/Parametres/AddGradeEnseignant";
+import EditGradeEnseignant from "pages/Parametres/EditGradeEnseignant";
+import AddPosteEnseignant from "pages/Parametres/AddPosteEnseignant";
+import EditPosteEnseignant from "pages/Parametres/EditPosteEnseignant";
+import AddSpecialiteEnseignant from "pages/Parametres/AddSpecialiteEnseignant";
+import EditSpecialiteEnseignant from "pages/Parametres/EditSpecialiteEnseignant";
+import ListServicesPersonnels from "pages/Parametres/ListServicesPersonnels";
+import AddServicesPersonnel from "pages/Parametres/AddServicePersonnel";
+import EditServicesPersonnel from "pages/Parametres/EditServicesPersonnel";
+import AddEtatEtudiant from "pages/Parametres/ParametresEtudiants/EtatEtudiant/AddEtatEtudiant";
+import EditEtatEtudiant from "pages/Parametres/ParametresEtudiants/EtatEtudiant/EditEtatEtudiant";
+import AddTypeInscriptionEtudiant from "pages/Parametres/ParametresEtudiants/InscriptionEtudiant/AddInscriptionEtudiant";
+import EditTypeInscriptionEtudiant from "pages/Parametres/ParametresEtudiants/InscriptionEtudiant/EditInscriptionEtudiant";
+import AddMatiere from "pages/Departements/GestionMatieres/AddMatiere";
+import EditMatiere from "pages/Departements/GestionMatieres/EditMatiere";
+import AddNiveau from "pages/Departements/GestionClasses/NiveauScolaire/AddNiveau";
+import EditNiveau from "pages/Departements/GestionClasses/NiveauScolaire/EditNiveau";
+import AddDepartement from "pages/Departements/GestionDepartements/AjouterDepaetement";
+import EditDepartement from "pages/Departements/GestionDepartements/EditDepartement";
+import AddSalle from "pages/Departements/GestionSalles/AjouterSalle";
+import EditSalle from "pages/Departements/GestionSalles/EditSalle";
+import AddSection from "pages/Departements/GestionClasses/Section/AddSection";
+import AddClasse from "pages/Departements/GestionClasses/AjouterClasse";
+import EditSection from "pages/Departements/GestionClasses/Section/EditSection";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -140,9 +174,9 @@ const authProtectedRoutes = [
   { path: "/GestionEnseignant", component: <GestionEnseignant /> },
   //avis etudiant
 
-    { path: "/ListeAvisEtudiant", component: <ListeAvisEtudiant /> },
-    { path: "/AjouterAvisEtudiant", component: <AjouterAvisEtudiant /> },
-    { path: "/SingleAvisEtudiant", component: <SingleAvisEtudiant /> },
+  { path: "/ListeAvisEtudiant", component: <ListeAvisEtudiant /> },
+  { path: "/AjouterAvisEtudiant", component: <AjouterAvisEtudiant /> },
+  { path: "/SingleAvisEtudiant", component: <SingleAvisEtudiant /> },
   //Ajouter Etudiant
   { path: "/AjouterEtudiant", component: <AjouterEtudiant /> },
 
@@ -163,44 +197,164 @@ const authProtectedRoutes = [
 
   //Liste Etat Etudiants
   { path: "/parametre/etat-etudiants", component: <ListParametresEtudiants /> },
+  //add Etat Etudiants
+  { path: "/parametre/add-etat-etudiant", component: <AddEtatEtudiant /> },
+  //edit Etat Etudiants
+  { path: "/parametre/edit-etat-etudiant", component: <EditEtatEtudiant /> },
 
   //Liste Inscriptions Etudiants
   {
     path: "/parametre/inscription-etudiants",
     component: <ListeInscriptionEtudiants />,
   },
+  //add Inscriptions Etudiants
+  {
+    path: "/parametre/add-inscription-etudiants",
+    component: <AddTypeInscriptionEtudiant />,
+  },
+  //edit Inscriptions Etudiants
+  {
+    path: "/parametre/edit-type-inscription-etudiant",
+    component: <EditTypeInscriptionEtudiant />,
+  },
 
   //Liste Etat Enseignants
   { path: "/parametre/etat-enseignants", component: <ListEtatEnseignants /> },
+  //add Etat Enseignants
+  { path: "/parametre/add-etat-enseignant", component: <AddEtatEnseignant /> },
+  //edit Etat Enseignants
+  {
+    path: "/parametre/edit-etat-enseignant",
+    component: <EditEtatEnseignant />,
+  },
 
   //Liste Grade Enseignants
   { path: "/parametre/grade-enseignants", component: <ListGradeEnseignants /> },
+  //add Grade Enseignants
+  {
+    path: "/parametre/add-grade-enseignant",
+    component: <AddGradeEnseignant />,
+  },
+
+  //add Grade Enseignants
+  {
+    path: "/parametre/edit-grade-enseignants",
+    component: <EditGradeEnseignant />,
+  },
 
   //Liste Poste Enseignants
   { path: "/parametre/poste-enseignants", component: <ListePostEnseignants /> },
+  //add Poste Enseignants
+  {
+    path: "/parametre/add-poste-enseignants",
+    component: <AddPosteEnseignant />,
+  },
+  //edit Poste Enseignants
+  {
+    path: "/parametre/edit-poste-enseignant",
+    component: <EditPosteEnseignant />,
+  },
 
   //Liste Specialite Enseignants
   {
     path: "/parametre/specialite-enseignants",
     component: <ListSpecialiteEnseignants />,
   },
+  //add Specialite Enseignants
+  {
+    path: "/parametre/add-specialite-enseignant",
+    component: <AddSpecialiteEnseignant />,
+  },
+  //edit Specialite Enseignants
+  {
+    path: "/parametre/edit-specialite-enseignant",
+    component: <EditSpecialiteEnseignant />,
+  },
 
   //Liste Etat Personnels
   { path: "/parametre/etat-personnels", component: <ListEtatPersonnels /> },
+  //Add etat Personnel
+  { path: "/parametre/add-etat-personnel", component: <AddEtatPersonnel /> },
+  //Modifier etat Personnel
+  { path: "/parametre/edit-etat-personnel", component: <EditEtatPersonnel /> },
 
   //Liste Grade Personnels
   { path: "/parametre/grade-personnels", component: <ListGradePersonnels /> },
+  //add Grade Personnels
+  { path: "/parametre/add-grade-personnels", component: <AddGradePersonnel /> },
+  //edit grade Personnels
+  {
+    path: "/parametre/edit-grade-personnels",
+    component: <EditGradePersonnel />,
+  },
 
+  //liste service personnel
+
+  {
+    path: "/parametre/service-personnels",
+    component: <ListServicesPersonnels />,
+  },
+
+  //add service personnel
+
+  {
+    path: "/parametre/add-service-personnels",
+    component: <AddServicesPersonnel />,
+  },
+
+  //edit service personnel
+
+  {
+    path: "/parametre/edit-service-personnels",
+    component: <EditServicesPersonnel />,
+  },
   //Liste Poste Personnels
   { path: "/parametre/poste-personnels", component: <ListePostPersonnels /> },
-  // Liste Categorie
+
+  //Add Poste Personnels
+  { path: "/parametre/add-poste-personnels", component: <AddPostePersonnel /> },
+
+  //edit Poste Personnels
+  {
+    path: "/parametre/edit-poste-personnel",
+    component: <EditPostePersonnel />,
+  },
+
+  // Liste Categorie personnels
   {
     path: "/parametre/categorie-personnels",
     component: <ListCategoriePersonnels />,
   },
 
+  // add Categorie perosnnels
+  {
+    path: "/parametre/add-categorie-personnels",
+    component: <AddCategoriePersonnel />,
+  },
+
+  // edit categorie
+
+  {
+    path: "/parametre/edit-categorie-personnels",
+    component: <EditCategoriePersonnel />,
+  },
+
   // Liste Des Matieres
-  { path: "/gestion-matieres/liste-matieres", component: <ListMatieres /> },
+  {
+    path: "/departement/gestion-matieres/liste-matieres",
+    component: <ListMatieres />,
+  },
+  // add Des Matieres
+  {
+    path: "/departement/gestion-matieres/add-matiere",
+    component: <AddMatiere />,
+  },
+  // edit Des Matieres
+  {
+    path: "/departement/gestion-matieres/edit-matiere",
+    component: <EditMatiere />,
+  },
+
   // Affecter matieres avec groupe
 
   {
@@ -209,22 +363,67 @@ const authProtectedRoutes = [
   },
 
   // Liste Des Salles
-  { path: "/gestion-salles/liste-salles", component: <ListSalles /> },
+  { path: "/departement/gestion-salles/liste-salles", component: <ListSalles /> },
+    // add Salle
+    { path: "/departement/gestion-salles/add-salle", component: <AddSalle /> },
+    // edit Salle
+    { path: "/departement/gestion-salles/edit-salle", component: <EditSalle /> },
+
+
+
 
   // Liste Des Departements
   {
     path: "/gestion-departements/liste-departements",
     component: <ListDepartement />,
   },
+ // add Des Departements
+ {
+  path: "/gestion-departements/departements/add-departement",
+  component: <AddDepartement />,
+},
+ // edit Des Departements
+ {
+  path: "/gestion-departements/departements/edit-departement",
+  component: <EditDepartement />,
+},
+
+
+
 
   // Liste Des classes
-  { path: "/gestion-classes/liste-classes", component: <ListClasses /> },
+  { path: "/departement/gestion-classes/liste-classes", component: <ListClasses /> },
+    // add classe
+    { path: "/departement/gestion-classes/add-classe", component: <AddClasse /> },
 
-  //Ajouter Niveau
-  { path: "/gestion-classes/Ajout-niveau", component: <ListNiveau /> },
+  //liste Niveau
+  {
+    path: "/departement/gestion-classes/liste-niveau",
+    component: <ListNiveau />,
+  },
+  //add Niveau
+  { path: "/departement/gestion-classes/add-niveau", component: <AddNiveau /> },
+  //edit Niveau
+  {
+    path: "/departement/gestion-classes/edit-niveau",
+    component: <EditNiveau />,
+  },
 
-  //Ajouter section
-  { path: "/gestion-classes/Ajout-section", component: <ListSections /> },
+  //LISTE section
+  {
+    path: "/departement/gestion-classes/liste-section",
+    component: <ListSections />,
+  },
+    //add section
+    {
+      path: "/departement/gestion-classes/add-section",
+      component: <AddSection />,
+    },
+     //edit section
+     {
+      path: "/departement/gestion-salles/edit-section",
+      component: <EditSection />,
+    },
 
   // Liste espaces de telechargements
   { path: "/espace-telechargement", component: <ListEspaceTelechargement /> },
@@ -232,9 +431,9 @@ const authProtectedRoutes = [
   //liste lien utils
 
   { path: "/liens-utils", component: <ListLienUtilst /> },
-//Permission 
+  //Permission
 
-{ path: "/permissions", component: <Permissions /> },
+  { path: "/permissions", component: <Permissions /> },
   // actualite
   { path: "/ListeActualite", component: <ListeActualite /> },
   { path: "/AjouterActualite", component: <AjouterActualite /> },
@@ -295,14 +494,14 @@ const authProtectedRoutes = [
     component: <EditReclamationPersonnel />,
   },
 
-   //avis enseignant
-   { path: "/ListeAvisEnseignant", component: <ListeAvisEnseignant /> },
-   { path: "/AjouterAvisEnseignant", component: <AjouterAvisEnseignant /> },
-   { path: "/SingleAvisEnseignant", component: <SingleAvisEnseignant /> },
-     // avis personnel
-     { path: "/ListeAvisPersonnel", component: <ListeAvisPersonnel /> },
-     { path: "/AjouterAvisPersonnel", component: <AjouterAvisPersonnel /> },
-     { path: "/SingleAvisPersonnel", component: <SingleAvisPersonnel /> },
+  //avis enseignant
+  { path: "/ListeAvisEnseignant", component: <ListeAvisEnseignant /> },
+  { path: "/AjouterAvisEnseignant", component: <AjouterAvisEnseignant /> },
+  { path: "/SingleAvisEnseignant", component: <SingleAvisEnseignant /> },
+  // avis personnel
+  { path: "/ListeAvisPersonnel", component: <ListeAvisPersonnel /> },
+  { path: "/AjouterAvisPersonnel", component: <AjouterAvisPersonnel /> },
+  { path: "/SingleAvisPersonnel", component: <SingleAvisPersonnel /> },
 
   { path: "/DemandeEnseignant", component: <DemandeEnseignant /> },
   { path: "/ReclamationEnseignant", component: <ReclamationEnseignant /> },

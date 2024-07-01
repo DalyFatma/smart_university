@@ -4,7 +4,6 @@ import {
   Card,
   Col,
   Container,
-  Dropdown,
   Form,
   Modal,
   Row,
@@ -12,7 +11,8 @@ import {
 import Breadcrumb from "Common/BreadCrumb";
 import { Link, useNavigate } from "react-router-dom";
 import TableContainer from "Common/TableContainer";
-import { sellerList } from "Common/data";
+import Swal from "sweetalert2";
+import { PosteEnseignant, useDeletePosteEnseignantMutation, useFetchPostesEnseignantQuery } from "features/posteEnseignant/posteEnseignant";
 
 
 
@@ -27,6 +27,52 @@ const ListePostEnseignants = () => {
   function tog_AddParametreModals() {
     setmodal_AddParametreModals(!modal_AddParametreModals);
   }
+
+
+  function tog_AddPosteEnseignant() {
+    navigate("/parametre/add-poste-enseignants");
+  }
+  const { data = [] } = useFetchPostesEnseignantQuery();
+  const [deletePosteEnseignant] = useDeletePosteEnseignantMutation();
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger",
+    },
+    buttonsStyling: false,
+  });
+  const AlertDelete = async (_id: string) => {
+  
+    swalWithBootstrapButtons
+    .fire({
+      title: "Êtes-vous sûr?",
+      text: "Vous ne pourrez pas revenir en arrière!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Oui, supprimez-le!",
+      cancelButtonText: "Non, annuler!",
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        deletePosteEnseignant(_id);
+        swalWithBootstrapButtons.fire(
+          "Supprimé!",
+          "Poste enseignant a été supprimé.",
+          "success"
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        swalWithBootstrapButtons.fire(
+          "Annulé",
+          "Poste enseignant est en sécurité :)",
+          "error"
+        );
+      }
+    });
+  }
+
+
   const columns = useMemo(
     () => [
         {
@@ -39,20 +85,20 @@ const ListePostEnseignants = () => {
       
         {
             Header: "Value",
-            accessor: "sellerName",
+            accessor: "value_poste_enseignant",
             disableFilters: true,
             filterable: true,
         },
        
         {
             Header: "Poste Enseignant",
-            accessor: "balance",
+            accessor: "poste_fr",
             disableFilters: true,
             filterable: true,
         },
         {
             Header: "الخطة الوظيفية",
-            accessor: "email",
+            accessor: "poste_ar",
             disableFilters: true,
             filterable: true,
         },
@@ -61,34 +107,13 @@ const ListePostEnseignants = () => {
             Header: "Action",
             disableFilters: true,
             filterable: true,
-            accessor: (cellProps: any) => {
+            accessor: (posteEnseignant: PosteEnseignant) => {
                 return (
                     <ul className="hstack gap-2 list-unstyled mb-0">
                       <li>
                         <Link
-                          to="#"
-                          className="badge bg-info-subtle text-info view-item-btn"
-               
-                        >
-                          <i
-                            className="ph ph-eye"
-                            style={{
-                              transition: "transform 0.3s ease-in-out",
-                              cursor: "pointer",
-                              fontSize: "1.5em",
-                            }}
-                            onMouseEnter={(e) =>
-                              (e.currentTarget.style.transform = "scale(1.4)")
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.style.transform = "scale(1)")
-                            }
-                          ></i>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="#"
+                         to="/parametre/edit-poste-enseignant"
+                         state={posteEnseignant}
                           className="badge bg-primary-subtle text-primary edit-item-btn"
                     
                         >
@@ -126,6 +151,7 @@ const ListePostEnseignants = () => {
                             onMouseLeave={(e) =>
                               (e.currentTarget.style.transform = "scale(1)")
                             }
+                            onClick={() => AlertDelete(posteEnseignant?._id!)}
                             
                           ></i>
                         </Link>
@@ -170,43 +196,22 @@ const ListePostEnseignants = () => {
                         <option value="Inactive">Desactivé</option>
                       </select>
                     </Col>
-                    {/* <Col className="col-lg-auto">
-                                            <select className="form-select" data-choices data-choices-search-false name="choices-single-default">
-                                                <option defaultValue="all">All</option>
-                                                <option value="Today">Today</option>
-                                                <option value="Yesterday">Yesterday</option>
-                                                <option value="Last 7 Days">Last 7 Days</option>
-                                                <option value="Last 30 Days">Last 30 Days</option>
-                                                <option value="This Month">This Month</option>
-                                                <option value="Last Month">Last Month</option>
-                                            </select>
-                                        </Col> */}
                     <Col className="col-lg-auto ms-auto">
                       <div className="hstack gap-2">
                         <Button
                           variant="primary"
                           className="add-btn"
-                          onClick={() => tog_AddParametreModals()}
+                          onClick={() => tog_AddPosteEnseignant()}
                         >
-                          Ajouter Poste
+                          Ajouter poste enseignant
                         </Button>
-                        {/* <Dropdown>
-                                                    <Dropdown.Toggle className="btn-icon btn btn-soft-dark arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i className="ph-dots-three-outline"></i>
-                                                    </Dropdown.Toggle>
-                                                    <Dropdown.Menu as="ul">
-                                                        <li><Link className="dropdown-item" to="#">Action</Link></li>
-                                                        <li><Link className="dropdown-item" to="#">Another action</Link></li>
-                                                        <li><Link className="dropdown-item" to="#">Something else here</Link></li>
-                                                    </Dropdown.Menu>
-                                                </Dropdown> */}
                       </div>
                     </Col>
                   </Row>
                 </Card.Body>
               </Card>
 
-              <Modal
+              {/* <Modal
                 className="fade modal-fullscreen"
                 show={modal_AddParametreModals}
                 onHide={() => {
@@ -282,7 +287,7 @@ const ListePostEnseignants = () => {
                     </div>
                   </div>
                 </Form>
-              </Modal>
+              </Modal> */}
 
               <Card>
                 <Card.Body className="p-0">
@@ -293,7 +298,7 @@ const ListePostEnseignants = () => {
                   >
                     <TableContainer
                 columns={(columns || [])}
-                data={(sellerList || [])}
+                data={(data || [])}
                 // isGlobalFilter={false}
                 iscustomPageSize={false}
                 isBordered={false}

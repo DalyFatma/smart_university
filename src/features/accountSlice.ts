@@ -3,53 +3,35 @@ import { RootState } from "app/store";
 
 export interface UserResponse {
   user: {
-    id: number;
-    name: string;
-    username: string;
-    email: string;
-    address: {
-      street: string;
-      suite: string;
-      city: string;
-      zipcode: string;
-      geo: {
-        lat: string;
-        lng: string;
-      };
-    };
-    phone: string;
-    website: string;
-    company: {
-      name: string;
-      catchPhrase: string;
-      bs: string;
-    };
+    _id?: string;
+    name: string,
+    email:string,
+    login:string,
+    role_id:string,
+    departement_id:string,
+    password: string,
+    api_token: string,
+    photo: string,
+    app_name: string,
+    status: string,
+    
   }
 }
 export interface Account {
   accessToken: string,
   user: {
-    id: number;
-    name: string;
-    username: string;
-    email: string;
-    address: {
-      street: string;
-      suite: string;
-      city: string;
-      zipcode: string;
-      geo: {
-        lat: string;
-        lng: string;
-      };
-    };
-    phone: string;
-    website: string;
-    company: {
-      name: string;
-      catchPhrase: string;
-      bs: string;
-    };
+    _id?: string;
+    name: string,
+    email:string,
+    login:string,
+    role_id:string,
+    departement_id:string,
+    password: string,
+    // api_token: string,
+    photo: string,
+    app_name: string,
+    status: string,
+    
   }
 }
 
@@ -61,10 +43,10 @@ export interface LoginRequest {
 export const accountSlice = createApi({
   reducerPath: "account",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://jsonplaceholder.typicode.com/users/1",
+    baseUrl: "http://localhost:5000/api/user/",
     prepareHeaders: (headers, { getState }) => {
       // By default, if we have a token in the store, let's use that for authenticated requests
-      const token = (getState() as RootState)?.auth?.user!;
+      const token = (getState() as RootState)?.auth?.user.api_token;
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
@@ -76,7 +58,7 @@ export const accountSlice = createApi({
     return {
       login: builder.mutation<UserResponse, LoginRequest>({
         query: (credentials) => ({
-          url: "/loginSchool",
+          url: "/login-user",
           method: "POST",
           body: credentials,
         }),
