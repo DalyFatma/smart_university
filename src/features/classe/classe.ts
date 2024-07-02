@@ -107,6 +107,10 @@ export const classeSlice = createApi({
         }),
         invalidatesTags: ["Classe"],
       }),
+      getAssignedMatieres: builder.query<Matiere[], string>({
+        query: (classeId) => `get-assigned-matieres/${classeId}`,
+        providesTags: ["Classe"],
+      }),
       
     };
   },
@@ -119,5 +123,6 @@ useDeleteClasseMutation,
 useUpdateClasseMutation, 
 useFetchClasseByIdMutation,
 useAssignMatiereToClasseMutation,
-useDeleteAssignedMatiereFromClasseMutation
+useDeleteAssignedMatiereFromClasseMutation,
+useGetAssignedMatieresQuery
 } = classeSlice;

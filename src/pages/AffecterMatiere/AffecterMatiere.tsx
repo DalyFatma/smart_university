@@ -22,32 +22,28 @@ const AffecterMatiere = () => {
   const [selectedMatieres, setSelectedMatieres] = useState<Matiere[]>([]);
   const navigate = useNavigate();
   const { data: allMatieres = [], error } = useFetchMatiereQuery();
-  const [assignMatiereToClasse, { isLoading, isError }] = useAssignMatiereToClasseMutation();
+  const [assignMatiereToClasse, { isLoading: isAssigningMatiere, isError: assignMatiereError }] = useAssignMatiereToClasseMutation();
   const [deleteAssignedMatiereFromClasse, { isLoading: isDeletingMatiere, isError: deleteMatiereError }] =
-  useDeleteAssignedMatiereFromClasseMutation();
- 
-
+    useDeleteAssignedMatiereFromClasseMutation();
 
   const location = useLocation();
-  console.log("location",location)
   const classeId = location.state?._id;
-  console.log("classeId",classeId)
 
-    useEffect(() => {
-      if (location.state?.matieres) {
-        setSelectedMatieres(location.state.matieres);
-      }
-    }, [location.state?.matieres]);
+  useEffect(() => {
+    if (location.state?.matieres) {
+      setSelectedMatieres(location.state.matieres);
+    }
+  }, [location.state?.matieres]);
 
-  if (error) {
-    console.error("Error fetching matieres:", error);
-    return <div>Error fetching matieres</div>;
+  if (error || deleteMatiereError || assignMatiereError) {
+    console.error("Error fetching matieres:", error || deleteMatiereError || assignMatiereError);
+    return <div>Error processing matieres</div>;
   }
 
   const prevNavigate = () => {
     navigate("/departement/gestion-classes/liste-classes");
   };
-  
+
   const options: MatiereOption[] = allMatieres.map((matiere) => ({
     value: matiere._id,
     label: matiere.matiere,
@@ -91,13 +87,10 @@ const AffecterMatiere = () => {
     }));
     setSelectedMatieres(matieres);
   };
-  
+
   const handleDeleteClick = async (matiereId: string) => {
     try {
-      // Perform deletion mutation or action
-      await deleteAssignedMatiereFromClasse({ classeId, matiereId });
-  
-      // Update state to remove the deleted matiere from selectedMatieres
+      await deleteAssignedMatiereFromClasse({ classeId, matiereId }).unwrap();
       setSelectedMatieres((prevMatieres) =>
         prevMatieres.filter((m) => m._id !== matiereId)
       );
@@ -106,22 +99,23 @@ const AffecterMatiere = () => {
     }
   };
   
-  
-  
-
   const handleSubmit = async () => {
-    const matiereIds = selectedMatieres.map((matiere) => matiere._id);
     try {
+      // Filter selectedMatieres to only include matieres that haven't been deleted
+      const matiereIds = selectedMatieres.map((matiere) => matiere._id);
       await assignMatiereToClasse({
         _id: classeId,
         matiereIds,
       }).unwrap();
+      // Optionally reset selectedMatieres after successful assignment
+      setSelectedMatieres([]);
       navigate("/departement/gestion-classes/liste-classes");
     } catch (error) {
       console.error("Error assigning matieres to classe:", error);
     }
   };
-
+  
+  
 
 
   return (
@@ -234,10 +228,10 @@ const AffecterMatiere = () => {
                             </Col>
                           </Row>
                         </SimpleBar>
-                        <Button variant="primary" onClick={handleSubmit} disabled={isLoading}>
+                        <Button variant="primary" onClick={handleSubmit} >
                           Submit
                         </Button>
-                        {isError && <div className="text-danger">Error assigning matieres to classe.</div>}
+                        {error && <div className="text-danger">Error assigning matieres to classe.</div>}
                       </div>
                     </Col>
                   </Row>
